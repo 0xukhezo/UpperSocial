@@ -21,6 +21,9 @@ contract FragmentPool is AccessControl, Initializable {
     // If the comunity whant to disable a creator
     bool _isDisabled;
 
+    address internal _creator;
+    uint256 internal _userId;
+
     FragmentToken internal _token;
     FragmentGovernance internal _governance;
     TimelockController internal _timelock;
@@ -44,12 +47,17 @@ contract FragmentPool is AccessControl, Initializable {
     function initialize(
         DataTypes.ConfigPool calldata config
     ) public initializer {
+        _userId = config.userId;
+        _creator = config.user;
+
+        _token = new FragmentToken(config.userId, config.totalSupply);
         address[] memory proposers = new address[](1);
         proposers[0] = config.user;
         address[] memory executors;
         executors[0] = address(0); // TODO: Admin?
+
         _timelock = new TimeLock(0, proposers, executors, address(0));
-        // NEed to create ERC20
+
         _governance = new FragmentGovernance(config.userId, _token, _timelock);
 
         _grantRole(DEFAULT_ADMIN_ROLE, config.admin);
