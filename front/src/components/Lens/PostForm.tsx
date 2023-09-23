@@ -16,9 +16,10 @@ import { never } from "../../utils/utils";
 
 export type PostComposerProps = {
   publisher: ProfileOwnedByMe;
+  isModal?: boolean;
 };
 
-export default function PostForm({ publisher }: PostComposerProps) {
+export default function PostForm({ publisher, isModal }: PostComposerProps) {
   const {
     execute: post,
     error: postError,
@@ -83,7 +84,11 @@ export default function PostForm({ publisher }: PostComposerProps) {
           placeholder="Write a new post"
           className="border-1 px-[12px] py-[15px] rounded-lg my-[30px] min-h-[125px] w-full"
         />
-        <div className="flex justify-between items-center border-b-2 pb-[44px]">
+        <div
+          className={`flex justify-between items-center ${
+            isModal ? "" : "border-b-2"
+          } pb-[44px]`}
+        >
           <div className="flex flex-row gap-x-[12px]">
             <Image height={24} width={24} src={Photo.src} alt="Upload Photo" />
             <Image height={24} width={24} src={Play.src} alt="Upload Video" />
