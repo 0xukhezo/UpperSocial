@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import ChatCard from "../Cards/ChatCard";
+import ChatFeed from "../Layout/ChatFeed";
 
 import { Client, Signer } from "@xmtp/xmtp-js";
 import { useEthersSigner } from "@/hooks/useEthersSigner";
@@ -117,6 +118,16 @@ export default function Chat() {
             );
           })}
         </div>
+      </section>
+      <section className="w-full relative" style={{ height: `${height}px` }}>
+        <ChatFeed
+          messages={messages}
+          profile={profile}
+          data={data}
+          address={address}
+          convertation={convRef.current}
+          height={height}
+        />
       </section>
     </div>
   );
