@@ -21,4 +21,11 @@ library DataTypes {
         uint256 timestamp;
         LoanState state;
     }
+
+    enum Markets {
+        INVALID,
+        AAVE,
+        COMP,
+        NONE
+    }
 }

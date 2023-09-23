@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: agpl-3.0
 pragma solidity 0.8.19;
 
+import "../utils/DataTypes.sol";
+import "../utils/Errors.sol";
+
 contract Manager {
     // General
     address internal _admin;
@@ -16,7 +19,7 @@ contract Manager {
     address internal _compound;
 
     // Allowed assets
-    mapping(address => bool) internal _allowedAssets;
+    mapping(address => DataTypes.Markets) internal _allowedAssets;
     // asset => aToken
     mapping(address => address) internal _aAaveAssets;
 
@@ -25,12 +28,11 @@ contract Manager {
     uint256 internal constant _defaultSupply = 888;
 
     /////////////////////////////////////
-    // ERRORS
-
-    error NotAdmin();
+    // MODIFIERS
+    //////////////////////////////////
 
     modifier onlyAdmin() {
-        if (msg.sender != _admin) revert NotAdmin();
+        if (msg.sender != _admin) revert Errors.NotAdmin();
         _;
     }
 
@@ -43,7 +45,6 @@ contract Manager {
     //////////////////////////////////////
     // LENS
     //////////////////////////////////////
-    // TODO : need to be LensHub
     // MUMBAI : 0x60Ae865ee4C725cd04353b5AAb364553f56ceF82
     function setLens(address lens) external onlyAdmin {
         _lens = lens;
@@ -73,6 +74,36 @@ contract Manager {
 
     function getAToken(address asset) external view returns (address) {
         return _aAaveAssets[asset];
+    }
+
+    //////////////////////////////////////
+    // COMPOUND
+    //////////////////////////////////////
+    // TODO : https://docs.compound.finance/#protocol-contracts
+    // MUMBAI : USDC 0xF09F0369aB0a875254fB565E52226c88f10Bc839
+    function setCompound(address compound) external onlyAdmin {
+        _compound = compound;
+    }
+
+    function getCompound() external view returns (address) {
+        return _compound;
+    }
+
+    //////////////////////////////////
+    // MARKETS
+    //////////////////////////////////
+
+    function setMarket(
+        address underlyinAsset,
+        DataTypes.Markets market
+    ) external onlyAdmin {
+        _allowedAssets[underlyinAsset] = market;
+    }
+
+    function getMarket(
+        address underlyinAsset
+    ) external view returns (DataTypes.Markets) {
+        return _allowedAssets[underlyinAsset];
     }
 
     //////////////////////////////////

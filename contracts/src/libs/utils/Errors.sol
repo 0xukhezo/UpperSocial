@@ -39,6 +39,7 @@ library Errors {
     error AmountExceedsBalance();
     error AmountToLow();
     error ApprovalFailed(address token);
+    error NotAdmin();
 
     ///////////////////////////////////////////
     ///   FUNCTIONS
