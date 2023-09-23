@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 library PriceLogic {
-    uint256 constant K = 1400;
+    uint256 constant K = 180;
 
     function getPrice(
         uint256 priceFragment,
@@ -20,6 +20,6 @@ library PriceLogic {
                 (currentSupply + amountToMin) *
                 (2 * (currentSupply - 1 + amountToMin) + 1)) / 6;
         uint256 summation = sum2 - sum1;
-        return (currentPrice * summation) / K;
+        return (priceFragment * summation) / K;
     }
 }
