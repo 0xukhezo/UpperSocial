@@ -186,7 +186,8 @@ contract FragmentPool is AccessControl, Initializable {
         uint256 price = PriceLogic.priceBuy(
             address(_token),
             _underlyingAsset,
-            amount
+            amount,
+            _getFullBalance()
         );
         uint256 protocolFee = (price * Manager(_manager).getProtocolFee()) /
             1 ether;
@@ -200,7 +201,8 @@ contract FragmentPool is AccessControl, Initializable {
         uint256 price = PriceLogic.priceBuy(
             address(_token),
             _underlyingAsset,
-            amount
+            amount,
+            _getFullBalance()
         );
         uint256 creatorFee = (price * Manager(_manager).getCreatorFee()) /
             1 ether;

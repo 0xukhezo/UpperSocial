@@ -10,10 +10,11 @@ library PriceLogic {
     function priceBuy(
         address fragment,
         address underlyingAsset,
-        uint256 amount
+        uint256 amount,
+        uint256 currentSupply
     ) internal view returns (uint256) {
         uint256 fullAmount = 0;
-        uint256 currentSupply = _getBalance(underlyingAsset);
+
         uint256 currentFragment = IERC20(fragment).balanceOf(address(this));
         for (uint256 i = 0; i < amount; ) {
             uint256 newBalance = currentFragment + i;
@@ -34,10 +35,11 @@ library PriceLogic {
     function priceSell(
         address fragment,
         address underlyingAsset,
-        uint256 amount
+        uint256 amount,
+        uint256 currentSupply
     ) internal view returns (uint256) {
         uint256 fullAmount = 0;
-        uint256 currentSupply = _getBalance(underlyingAsset);
+
         uint256 currentFragment = IERC20(fragment).balanceOf(address(this));
         for (uint256 i = 0; i < amount; ) {
             uint256 newBalance = currentFragment + i;
@@ -53,10 +55,6 @@ library PriceLogic {
         }
 
         return fullAmount;
-    }
-
-    function _getBalance(address fragment) internal view returns (uint256) {
-        return IERC20(fragment).balanceOf(address(this));
     }
 
     function _calculatePriceFragment(
