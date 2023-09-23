@@ -11,6 +11,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./libs/gov/TimeLock.sol";
 import "./FragmentGovernance.sol";
 import "./libs/utils/DataTypes.sol";
+import "./libs/tokens/FragmentToken.sol";
 
 contract FragmentPool is AccessControl, Initializable {
     using SafeERC20 for IERC20;
@@ -20,6 +21,7 @@ contract FragmentPool is AccessControl, Initializable {
     // If the comunity whant to disable a creator
     bool _isDisabled;
 
+    FragmentToken internal _token;
     FragmentGovernance internal _governance;
     TimelockController internal _timelock;
 
@@ -48,7 +50,7 @@ contract FragmentPool is AccessControl, Initializable {
         executors[0] = address(0); // TODO: Admin?
         _timelock = new TimeLock(0, proposers, executors, address(0));
         // NEed to create ERC20
-        // _governance = new FragmentGovernance(config.userId, erc20 new?, _timelock);
+        _governance = new FragmentGovernance(config.userId, _token, _timelock);
 
         _grantRole(DEFAULT_ADMIN_ROLE, config.admin);
         _setupRole(GOV_ROLE, address(_governance));
@@ -65,68 +67,3 @@ contract FragmentPool is AccessControl, Initializable {
         _isDisabled = true;
     }
 }
-
-/***
-
- function getPrice(uint256 supply, uint256 amount) public pure returns (uint256) {
-        uint256 sum1 = supply == 0 ? 0 : (supply - 1 )* (supply) * (2 * (supply - 1) + 1) / 6;
-        uint256 sum2 = supply == 0 && amount == 1 ? 0 : (supply - 1 + amount) * (supply + amount) * (2 * (supply - 1 + amount) + 1) / 6;
-        uint256 summation = sum2 - sum1;
-        return summation * 1 ether / 16000;
-    }
-
-    function getBuyPrice(address sharesSubject, uint256 amount) public view returns (uint256) {
-        return getPrice(sharesSupply[sharesSubject], amount);
-    }
-
-    function getSellPrice(address sharesSubject, uint256 amount) public view returns (uint256) {
-        return getPrice(sharesSupply[sharesSubject] - amount, amount);
-    }
-
-    function getBuyPriceAfterFee(address sharesSubject, uint256 amount) public view returns (uint256) {
-        uint256 price = getBuyPrice(sharesSubject, amount);
-        uint256 protocolFee = price * protocolFeePercent / 1 ether;
-        uint256 subjectFee = price * subjectFeePercent / 1 ether;
-        return price + protocolFee + subjectFee;
-    }
-
-    function getSellPriceAfterFee(address sharesSubject, uint256 amount) public view returns (uint256) {
-        uint256 price = getSellPrice(sharesSubject, amount);
-        uint256 protocolFee = price * protocolFeePercent / 1 ether;
-        uint256 subjectFee = price * subjectFeePercent / 1 ether;
-        return price - protocolFee - subjectFee;
-    }
-
-    function buyShares(address sharesSubject, uint256 amount) public payable {
-        uint256 supply = sharesSupply[sharesSubject];
-        require(supply > 0 || sharesSubject == msg.sender, "Only the shares' subject can buy the first share");
-        uint256 price = getPrice(supply, amount);
-        uint256 protocolFee = price * protocolFeePercent / 1 ether;
-        uint256 subjectFee = price * subjectFeePercent / 1 ether;
-        require(msg.value >= price + protocolFee + subjectFee, "Insufficient payment");
-        sharesBalance[sharesSubject][msg.sender] = sharesBalance[sharesSubject][msg.sender] + amount;
-        sharesSupply[sharesSubject] = supply + amount;
-        emit Trade(msg.sender, sharesSubject, true, amount, price, protocolFee, subjectFee, supply + amount);
-        (bool success1, ) = protocolFeeDestination.call{value: protocolFee}("");
-        (bool success2, ) = sharesSubject.call{value: subjectFee}("");
-        require(success1 && success2, "Unable to send funds");
-    }
-
-    function sellShares(address sharesSubject, uint256 amount) public payable {
-        uint256 supply = sharesSupply[sharesSubject];
-        require(supply > amount, "Cannot sell the last share");
-        uint256 price = getPrice(supply - amount, amount);
-        uint256 protocolFee = price * protocolFeePercent / 1 ether;
-        uint256 subjectFee = price * subjectFeePercent / 1 ether;
-        require(sharesBalance[sharesSubject][msg.sender] >= amount, "Insufficient shares");
-        sharesBalance[sharesSubject][msg.sender] = sharesBalance[sharesSubject][msg.sender] - amount;
-        sharesSupply[sharesSubject] = supply - amount;
-        emit Trade(msg.sender, sharesSubject, false, amount, price, protocolFee, subjectFee, supply - amount);
-        (bool success1, ) = msg.sender.call{value: price - protocolFee - subjectFee}("");
-        (bool success2, ) = protocolFeeDestination.call{value: protocolFee}("");
-        (bool success3, ) = sharesSubject.call{value: subjectFee}("");
-        require(success1 && success2 && success3, "Unable to send funds");
-    }
-
-
- */

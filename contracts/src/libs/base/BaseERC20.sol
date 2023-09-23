@@ -3,9 +3,8 @@ pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 
-contract BaseERC20 is ERC20, ERC20Permit, ERC20Votes {
+contract BaseERC20 is ERC20, ERC20Permit {
     string internal _name;
     string internal _symbol;
     uint8 internal immutable _decimals;
@@ -14,31 +13,5 @@ contract BaseERC20 is ERC20, ERC20Permit, ERC20Votes {
         uint8 defaultDecimals
     ) ERC20(_name, _symbol) ERC20Permit(_name) {
         _decimals = defaultDecimals;
-    }
-
-    function decimals() public view override(ERC20) returns (uint8) {
-        return _decimals;
-    }
-
-    function _afterTokenTransfer(
-        address from,
-        address to,
-        uint256 amount
-    ) internal override(ERC20, ERC20Votes) {
-        super._afterTokenTransfer(from, to, amount);
-    }
-
-    function _mint(
-        address to,
-        uint256 amount
-    ) internal override(ERC20, ERC20Votes) {
-        super._mint(to, amount);
-    }
-
-    function _burn(
-        address account,
-        uint256 amount
-    ) internal override(ERC20, ERC20Votes) {
-        super._burn(account, amount);
     }
 }
