@@ -84,11 +84,11 @@ contract Manager {
     // TODO : https://docs.compound.finance/#protocol-contracts
     // MUMBAI : USDC 0xF09F0369aB0a875254fB565E52226c88f10Bc839
 
-    function setCAsset(address asset, address aToken) external onlyAdmin {
-        _aAaveAssets[asset] = aToken;
+    function setCAsset(address asset, address cToken) external onlyAdmin {
+        _aAaveAssets[asset] = cToken;
     }
 
-    function getCToken(address asset) external view returns (address) {
+    function getCAsset(address asset) external view returns (address) {
         return _aCompAssets[asset];
     }
 
@@ -114,7 +114,7 @@ contract Manager {
         if (_allowedAssets[underlyingAsset] == DataTypes.Markets.AAVE) {
             return this.getAave();
         } else if (_allowedAssets[underlyingAsset] == DataTypes.Markets.COMP) {
-            return this.getCToken(underlyingAsset);
+            return this.getCAsset(underlyingAsset);
         }
         // NO defi market
         return address(0);
