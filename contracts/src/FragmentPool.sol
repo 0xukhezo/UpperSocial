@@ -316,6 +316,9 @@ contract FragmentPool is AccessControl, Initializable {
                 _manager.getAToken(_underlyingAsset),
                 address(this)
             ) +
-            CompoundLogic.balanceOf(address(0), address(this));
+            CompoundLogic.balanceOf(
+                _manager.getCAsset(_underlyingAsset),
+                address(this)
+            );
     }
 }
