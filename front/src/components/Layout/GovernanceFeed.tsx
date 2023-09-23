@@ -1,5 +1,6 @@
 import { formatNumber } from "@/utils/formatNumber";
 import React from "react";
+import VoteCard from "../Cards/VoteCard";
 import PieChart from "../Chart/PieChart";
 
 interface GovernanceFeedProps {
@@ -53,6 +54,9 @@ export default function GovernanceFeed({
               <span>{proposalSelected.no}</span> <span>122</span>
             </div>
           </div>
+        </div>
+        <div className="mt-[40px]">
+          <VoteCard />
         </div>
       </section>
     </div>
