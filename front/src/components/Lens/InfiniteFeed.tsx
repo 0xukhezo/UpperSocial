@@ -1,6 +1,7 @@
 import { ProfileId, useFeed } from "@lens-protocol/react-web";
 import React from "react";
 import PostCard from "../Cards/PostCard";
+import Loader from "../Loader/Loader";
 
 interface InfiniteFeedProps {
   profileId: ProfileId;
@@ -15,7 +16,7 @@ export default function InfiniteFeed({ profileId }: InfiniteFeedProps) {
   return (
     <div>
       {loading ? (
-        <div>Loading</div>
+        <Loader />
       ) : (
         feedItems?.map((item: any, index: number) => {
           return (
