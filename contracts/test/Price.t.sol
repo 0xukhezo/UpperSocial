@@ -11,10 +11,14 @@ contract PriceTest is Test {
     function setUp() public {}
 
     function testFirstMint() public {
-        uint256 k = PriceLogic.getPrice(SUPPLY, 1);
+        uint256 k = PriceLogic.getPrice(0, 1);
 
-        console.log(FIRST_PRICE * k);
+        console.log("FIRST", FIRST_PRICE * k);
     }
 
-    function testSetNumber(uint256 x) public {}
+    function testFirst10() public {
+        uint256 k = PriceLogic.getPrice(1, 10);
+        console.log("K", k);
+        console.log("FIRST 10 : ", FIRST_PRICE * k);
+    }
 }
