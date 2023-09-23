@@ -17,6 +17,6 @@ library PriceLogic {
                 (supply + amount) *
                 (2 * (supply - 1 + amount) + 1)) / 6;
         uint256 summation = sum2 - sum1;
-        return summation;
+        return summation / K;
     }
 }
