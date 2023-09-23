@@ -101,7 +101,7 @@ export default function ChatFeed({
         </>
       ) : (
         <div className="justify-center flex flex-col h-screen items-center pb-32">
-          <span className="mb-10">Select a chat</span>
+          <span className="mb-10 font-semibold text-lg">Select a chat</span>
           <Image
             src={UpperSocial.src}
             height={200}
