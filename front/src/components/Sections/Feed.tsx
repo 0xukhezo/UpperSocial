@@ -1,9 +1,9 @@
 import React from "react";
-import TrendingCreators from "../Cards/TrendingCreators";
-import PostForm from "../Lens/PostForm";
+import TrendingCreatorCard from "../Cards/TrendingCreatorCard";
+import PostForm from "../Forms/PostForm";
 import { ProfileOwnedByMe, useProfilesOwnedBy } from "@lens-protocol/react-web";
-import InfiniteFeed from "../Lens/InfiniteFeed";
-import LeaderBoard from "../Cards/LeaderBoard";
+import InfiniteFeed from "../Feeds/InfiniteFeed";
+import LeaderBoard from "../ShowCards/LeaderBoard";
 
 interface FeedProps {
   wallet: string;
@@ -30,9 +30,9 @@ export default function Feed({ wallet }: FeedProps) {
           Trending Creators
         </h2>
         <div className="mb-[30px]">
-          <TrendingCreators handle={"stani.lens"} />{" "}
-          <TrendingCreators handle={"ethglobal.lens"} />{" "}
-          <TrendingCreators handle={"christina.lens"} />
+          <TrendingCreatorCard handle={"stani.lens"} />{" "}
+          <TrendingCreatorCard handle={"ethglobal.lens"} />{" "}
+          <TrendingCreatorCard handle={"christina.lens"} />
         </div>
         <LeaderBoard />
       </section>

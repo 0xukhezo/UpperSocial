@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 
 import Bookmark from "../../../public/Bookmark.svg";
-import LeaderBoardCard from "./LeaderBoardCard";
+import LeaderBoardCard from "../Cards/LeaderBoardCard";
 
 const leaders = [
   { handle: "damarnez.lens" },

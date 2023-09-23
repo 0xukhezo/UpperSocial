@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import ChatCard from "../Cards/ChatCard";
-import ChatFeed from "../Layout/ChatFeed";
+import ChatFeed from "../Feeds/ChatFeed";
 
 import { Client, Signer } from "@xmtp/xmtp-js";
 import { useEthersSigner } from "@/hooks/useEthersSigner";
