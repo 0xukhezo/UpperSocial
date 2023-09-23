@@ -1,43 +1,26 @@
 // React
-import React from "react";
-// Wagmi
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from "wagmi";
-// Abis
-import abi from "../../../abis/abi.json";
+import React, { useState } from "react";
+//Components
+import TokensModal from "../Modals/CreatorModal";
 
-export default function CreatorCard() {
-  const creatorFactoryAddress = process.env.NEXT_PUBLIC_CREATOR_FACTORY_ADDRESS;
+interface CreatorCardprops {
+  profileAddress: string;
+  profileId: string;
+}
 
-  const { config: creatorFactoryContractConfig } = usePrepareContractWrite({
-    address: creatorFactoryAddress as `0x${string}`,
-    abi: abi.abiCreatorFactory,
-    functionName: "createPool",
-    args: [],
-  });
+export default function CreatorCard({
+  profileAddress,
+  profileId,
+}: CreatorCardprops) {
+  const [openModal, setOpenModal] = useState(false);
 
-  const { writeAsync: creatorFactoryContractTx, data: dataCreatorFactory } =
-    useContractWrite(creatorFactoryContractConfig);
-
-  const { isSuccess: txSuccessSellFragment } = useWaitForTransaction({
-    confirmations: 3,
-    hash: dataCreatorFactory?.hash,
-  });
-
-  const onCreatorFactoryClick = async () => {
-    try {
-      await creatorFactoryContractTx?.();
-    } catch (error) {
-      console.log(error);
-    }
+  const getOpenModal = (modalClose: boolean) => {
+    setOpenModal(modalClose);
   };
 
   return (
-    <div className="flex flex-col ml-[24px] mt-[26px]">
-      <div className="shadow-xl max-w-[448px] px-[20px] py-[24px] rounded-lg">
+    <div className="ml-[24px] mt-[26px]">
+      <div className="flex flex-col shadow-xl max-w-[448px] px-[20px] py-[24px] rounded-lg">
         <h2 className="mb-[12px] font-semibold text-lg">Become a creator</h2>
         <span>
           Become an Upper Creator, start creating content and get paid for it.
@@ -45,12 +28,19 @@ export default function CreatorCard() {
         <div className="mt-[24px]">
           <button
             className="bg-indigo-700 rounded-lg font-medium text-white tracking-wide text-sm w-full py-[9px] mt-[20px] flex items-center justify-center"
-            onClick={() => onCreatorFactoryClick()}
+            onClick={() => setOpenModal(true)}
           >
             <span>Become a Creator</span>
           </button>
         </div>
       </div>
+      {openModal && (
+        <TokensModal
+          getOpenModal={getOpenModal}
+          profileId={profileId}
+          profileAddress={profileAddress}
+        />
+      )}
     </div>
   );
 }

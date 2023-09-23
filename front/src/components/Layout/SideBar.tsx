@@ -181,7 +181,7 @@ export default function SideBar({ page, isProfile, isChat }: SideBarProps) {
                               Airdrop
                             </li>
                             <li>
-                              {data && data?.length > 0 && (
+                              {/* {data && data?.length > 0 && (
                                 <Link
                                   href={`/profiles/${data[0].handle}`}
                                   className={classNames(
@@ -220,7 +220,30 @@ export default function SideBar({ page, isProfile, isChat }: SideBarProps) {
                                   )}
                                   Profile
                                 </Link>
-                              )}
+                              )} */}
+                              <Link
+                                href={`/profiles/1695481341214.test`}
+                                className={classNames(
+                                  router.route.slice(1, router.route.length) ==
+                                    "profile"
+                                    ? "text-gray-900 hover:text-gray-900"
+                                    : "text-gray-600",
+                                  "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold hover:text-indigo-700"
+                                )}
+                              >
+                                {" "}
+                                <Image
+                                  width={24}
+                                  height={24}
+                                  alt="Profile Image"
+                                  src={`data:image/png;base64,${new Identicon(
+                                    "0xF70c1cEa8909563619547128A92dd7CC965F9657",
+                                    64
+                                  ).toString()}`}
+                                  className="rounded-full"
+                                />
+                                Profile
+                              </Link>
                             </li>
                           </ul>
                         </li>
@@ -291,7 +314,7 @@ export default function SideBar({ page, isProfile, isChat }: SideBarProps) {
                       <span>Airdrop</span>
                     </li>
                     <li>
-                      {data && data?.length > 0 && (
+                      {/* {data && data?.length > 0 && (
                         <Link
                           href={`/profiles/${data[0].handle}`}
                           className={classNames(
@@ -328,7 +351,30 @@ export default function SideBar({ page, isProfile, isChat }: SideBarProps) {
                           )}
                           Profile
                         </Link>
-                      )}
+                      )} */}{" "}
+                      <Link
+                        href={`/profiles/1695481341214.test`}
+                        className={classNames(
+                          router.route.slice(1, router.route.length) ==
+                            "profile"
+                            ? "text-gray-900 hover:text-gray-900"
+                            : "text-gray-600",
+                          "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold hover:text-indigo-700"
+                        )}
+                      >
+                        {" "}
+                        <Image
+                          width={24}
+                          height={24}
+                          alt="Profile Image"
+                          src={`data:image/png;base64,${new Identicon(
+                            "0xF70c1cEa8909563619547128A92dd7CC965F9657",
+                            64
+                          ).toString()}`}
+                          className="rounded-full"
+                        />
+                        Profile
+                      </Link>
                     </li>
                   </ul>
                   <button

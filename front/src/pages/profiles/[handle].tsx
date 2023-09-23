@@ -18,7 +18,7 @@ export default function PorfileHandle() {
         page={
           <Profile
             handle={router.query.handle}
-            isMyProfile={data?.handle === router.query.handle}
+            isMyProfile={"1695481341214.test" === router.query.handle}
             myProfile={data}
           />
         }
