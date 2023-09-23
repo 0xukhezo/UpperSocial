@@ -7,7 +7,7 @@ import { useProfile } from "@lens-protocol/react-web";
 // Identicon
 import Identicon from "identicon.js";
 // Images
-import UpperSocial from "../../../public/UpperSocial.svg";
+import Cover from "../../../public/Cover.svg";
 // Compoenents
 import Link from "next/link";
 
@@ -36,7 +36,7 @@ export default function TrendingCreators({ handle }: TrendingCreatorsProps) {
                     backgroundSize: "cover",
                   }
                 : {
-                    backgroundImage: `url('${UpperSocial.src}')`,
+                    backgroundImage: `url('${Cover.src}')`,
                     backgroundSize: "contain",
                     backgroundRepeat: "no-repeat",
                   }

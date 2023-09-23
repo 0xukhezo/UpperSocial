@@ -65,7 +65,7 @@ export default function SideBar({ page, isProfile, isChat }: SideBarProps) {
     limit: 10,
   });
   const router = useRouter();
-
+  console.log(data);
   const getOpenModal = (modalState: boolean) => {
     setModalOpen(modalState);
   };
@@ -181,7 +181,7 @@ export default function SideBar({ page, isProfile, isChat }: SideBarProps) {
                               Airdrop
                             </li>
                             <li>
-                              {data && (
+                              {data && data?.length > 0 && (
                                 <Link
                                   href={`/profiles/${data[0].handle}`}
                                   className={classNames(
@@ -291,7 +291,7 @@ export default function SideBar({ page, isProfile, isChat }: SideBarProps) {
                       <span>Airdrop</span>
                     </li>
                     <li>
-                      {data && (
+                      {data && data?.length > 0 && (
                         <Link
                           href={`/profiles/${data[0].handle}`}
                           className={classNames(

@@ -14,7 +14,7 @@ import ProfileMarketplace from "../Profile/ProfileMarketplace";
 import CreatorCard from "../Cards//CreatorCard";
 import FollowButton from "../Buttons/FollowButton";
 // Images
-import UpperSocial from "../../../public/UpperSocial.svg";
+import Cover from "../../../public/Cover.svg";
 // Identicon
 import Identicon from "identicon.js";
 // React
@@ -73,7 +73,7 @@ export default function Profile({
                           "https://ipfs.io/ipfs/"
                         )}')`,
                       }
-                    : { backgroundImage: `url('${UpperSocial.src}')` }
+                    : { backgroundImage: `url('${Cover.src}')` }
                 }
               >
                 <div className=" ml-[32px] pt-[181px] flex">
