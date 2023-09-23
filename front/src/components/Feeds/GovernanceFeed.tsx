@@ -1,6 +1,6 @@
 import { formatNumber } from "@/utils/formatNumber";
 import React from "react";
-import VoteCard from "../Cards/VoteCard";
+import VoteCard from "../ShowCards/VoteCard";
 import PieChart from "../Chart/PieChart";
 
 interface GovernanceFeedProps {

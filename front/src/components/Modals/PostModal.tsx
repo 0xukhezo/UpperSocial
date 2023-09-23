@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import PostForm from "../Lens/PostForm";
+import PostForm from "../Forms/PostForm";
 import { ProfileOwnedByMe } from "@lens-protocol/react-web";
 
 interface PostModalInterface {

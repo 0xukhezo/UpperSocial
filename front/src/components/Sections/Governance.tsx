@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import GovernanceCard from "../Cards/GovernanceCard";
 import ProposalForm from "../Forms/ProposalForm";
-import GovernanceFeed from "../Layout/GovernanceFeed";
+import GovernanceFeed from "../Feeds/GovernanceFeed";
 
 const governanceProposals = [
   {
