@@ -7,6 +7,19 @@ library DataTypes {
         uint256 totalSupply;
         address user;
         address underlyingAsset;
-        address admin;
+        address manager;
+    }
+
+    enum LoanState {
+        ENDED,
+        PENDING
+    }
+
+    struct Loan {
+        uint256 loanId;
+        uint256 amount;
+        uint256 interest;
+        uint256 timestamp;
+        LoanState state;
     }
 }
