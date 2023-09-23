@@ -1,7 +1,11 @@
+import SideBar from "@/components/Layout/SideBar";
+import Marketplace from "@/components/Sections/Marketplace";
 import React from "react";
 
-function Purchases() {
-  return <div>Purchases</div>;
+export default function Purchases() {
+  return (
+    <div>
+      <SideBar page={<Marketplace />} isChat={true} isProfile={true} />
+    </div>
+  );
 }
-
-export default Purchases;

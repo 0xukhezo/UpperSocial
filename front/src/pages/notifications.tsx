@@ -1,7 +1,20 @@
+import SideBar from "@/components/Layout/SideBar";
+import Notification from "@/components/Sections/Notification";
+import { useProfile } from "@lens-protocol/react-web";
 import React from "react";
 
-function Notifications() {
-  return <div>notifications</div>;
-}
+export default function Notifications() {
+  const { data: profile } = useProfile({ handle: "christina.lens" });
 
-export default Notifications;
+  return (
+    <div>
+      {profile && (
+        <SideBar
+          page={<Notification profileId={profile.id} />}
+          isChat={true}
+          isProfile={true}
+        />
+      )}
+    </div>
+  );
+}
