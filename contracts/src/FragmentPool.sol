@@ -298,10 +298,11 @@ contract FragmentPool is AccessControl, Initializable {
     // PRIVATE
     ///////////////////////////////////////////////
     function _rebalanceTokens() internal {
-        if (_market != DataTypes.NONE) {
+        if (_market != DataTypes.Markets.NONE) {
             uint256 amount = IERC20(_underlyingAsset).balanceOf(address(this));
             if (amount > 0) {
                 LendingLogic.deposit(
+                    _market,
                     _manager.getPool(_underlyingAsset),
                     _underlyingAsset,
                     amount
