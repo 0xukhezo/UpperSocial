@@ -22,6 +22,8 @@ contract Manager {
     mapping(address => DataTypes.Markets) internal _allowedAssets;
     // asset => aToken
     mapping(address => address) internal _aAaveAssets;
+    // asset => cToken
+    mapping(address => address) internal _aCompAssets;
 
     uint256 internal constant _protocolFee = 5000;
     uint256 internal constant _creatorFee = 5000;
@@ -68,7 +70,7 @@ contract Manager {
         return _aave;
     }
 
-    function setAsset(address asset, address aToken) external onlyAdmin {
+    function setAAsset(address asset, address aToken) external onlyAdmin {
         _aAaveAssets[asset] = aToken;
     }
 
@@ -87,6 +89,14 @@ contract Manager {
 
     function getCompound() external view returns (address) {
         return _compound;
+    }
+
+    function setCAsset(address asset, address aToken) external onlyAdmin {
+        _aAaveAssets[asset] = aToken;
+    }
+
+    function getCToken(address asset) external view returns (address) {
+        return _aCompAssets[asset];
     }
 
     //////////////////////////////////
