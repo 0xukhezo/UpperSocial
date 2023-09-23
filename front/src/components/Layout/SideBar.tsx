@@ -1,7 +1,13 @@
+// React
 import { Fragment, ReactElement, useState } from "react";
-import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
+// Next
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+// Identicon
 import Identicon from "identicon.js";
+// Heroicons
 import {
   Bars3Icon,
   ChartBarIcon,
@@ -12,14 +18,15 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+// Images
 import UpperCoin from "../../../public/UpperCoin.svg";
 import Parachute from "../../../public/Parachute.svg";
-import Link from "next/link";
-import { useRouter } from "next/router";
+// Lens
 import {
   ProfileOwnedByMe,
   useProfilesOwnedByMe,
 } from "@lens-protocol/react-web";
+// Components
 import LogoutButton from "../Buttons/LogoutButton";
 import PostModal from "../Modals/PostModal";
 
@@ -58,7 +65,7 @@ export default function SideBar({ page, isProfile, isChat }: SideBarProps) {
     limit: 10,
   });
   const router = useRouter();
-
+  console.log(data);
   const getOpenModal = (modalState: boolean) => {
     setModalOpen(modalState);
   };
@@ -174,7 +181,7 @@ export default function SideBar({ page, isProfile, isChat }: SideBarProps) {
                               Airdrop
                             </li>
                             <li>
-                              {data && (
+                              {data && data?.length > 0 && (
                                 <Link
                                   href={`/profiles/${data[0].handle}`}
                                   className={classNames(
@@ -284,7 +291,7 @@ export default function SideBar({ page, isProfile, isChat }: SideBarProps) {
                       <span>Airdrop</span>
                     </li>
                     <li>
-                      {data && (
+                      {data && data?.length > 0 && (
                         <Link
                           href={`/profiles/${data[0].handle}`}
                           className={classNames(

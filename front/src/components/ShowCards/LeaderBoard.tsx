@@ -1,7 +1,10 @@
+// React
 import React from "react";
+// Next
 import Image from "next/image";
-
+// Images
 import Bookmark from "../../../public/Bookmark.svg";
+// Components
 import LeaderBoardCard from "../Cards/LeaderBoardCard";
 
 const leaders = [

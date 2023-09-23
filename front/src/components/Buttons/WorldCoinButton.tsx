@@ -1,6 +1,10 @@
+// React
 import React from "react";
+// Images
 import Image from "next/image";
+// Worldcoin
 import { CredentialType, IDKitWidget } from "@worldcoin/idkit";
+// Images
 import Worldcoin from "../../../public/Worldcoin.svg";
 
 interface WorldCoinButtonProps {

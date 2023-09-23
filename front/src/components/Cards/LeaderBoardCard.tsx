@@ -1,5 +1,8 @@
+// Lens
 import { useProfile } from "@lens-protocol/react-web";
+// Next
 import Link from "next/link";
+// React
 import React from "react";
 
 interface LeaderBoardCardProps {

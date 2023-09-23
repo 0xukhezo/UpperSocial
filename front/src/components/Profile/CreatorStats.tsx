@@ -1,11 +1,15 @@
+// Next
 import Image from "next/image";
-
+// Images
 import MaticCoin from "../../../public/MaticCoin.svg";
 import UpperCoin from "../../../public/UpperCoin.svg";
+// Abi
 import abi from "../../../abis/abi.json";
+// Utils
 import { formatNumber } from "@/utils/formatNumber";
-
+// Heroicons
 import { ArrowSmallUpIcon } from "@heroicons/react/24/outline";
+// Wagmi
 import { useContractRead } from "wagmi";
 
 export default function CreatorStats() {

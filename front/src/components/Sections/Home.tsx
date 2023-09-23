@@ -1,13 +1,18 @@
+// Lens
 import { useActiveWallet } from "@lens-protocol/react-web";
+// Next
 import Image from "next/image";
+// React
 import React, { useEffect, useState } from "react";
-import LoginButton from "../Buttons/LoginButton";
+// Images
 import Arrow from "../../../public/Arrow.svg";
 import Rectangle from "../../../public/Rectangle.svg";
 import Circle from "../../../public/Circle.svg";
 import And from "../../../public/And.svg";
 import Cross from "../../../public/Cross.svg";
 import HomeImage from "../../../public/HomeImage.svg";
+// Components
+import LoginButton from "../Buttons/LoginButton";
 import SideBar from "../Layout/SideBar";
 import Feed from "./Feed";
 

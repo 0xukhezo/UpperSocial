@@ -1,5 +1,8 @@
-import { formatNumber } from "@/utils/formatNumber";
+// React
 import React from "react";
+// Utils
+import { formatNumber } from "@/utils/formatNumber";
+// Components
 import VoteCard from "../ShowCards/VoteCard";
 import PieChart from "../Chart/PieChart";
 

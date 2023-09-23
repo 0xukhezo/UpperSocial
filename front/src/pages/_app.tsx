@@ -1,8 +1,11 @@
+// Next
 import type { AppProps } from "next/app";
+// Wagmi
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
 import { polygon, polygonMumbai } from "wagmi/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { publicProvider } from "wagmi/providers/public";
+// Lens
 import { LensConfig, development, production } from "@lens-protocol/react-web";
 import { bindings as wagmiBindings } from "@lens-protocol/wagmi";
 import { LensProvider } from "@lens-protocol/react-web";

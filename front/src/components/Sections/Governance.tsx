@@ -1,4 +1,6 @@
+// React
 import React, { useEffect, useState } from "react";
+// Components
 import GovernanceCard from "../Cards/GovernanceCard";
 import ProposalForm from "../Forms/ProposalForm";
 import GovernanceFeed from "../Feeds/GovernanceFeed";

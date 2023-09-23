@@ -1,4 +1,6 @@
+// React
 import React, { useState } from "react";
+// Heroicons
 import { HandThumbUpIcon } from "@heroicons/react/24/outline";
 
 interface GovernanceCardProps {

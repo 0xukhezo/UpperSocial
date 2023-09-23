@@ -1,6 +1,8 @@
+// Lens
 import { ImageType } from "@lens-protocol/react-web";
+// React
 import { useRef, useEffect, useCallback } from "react";
-
+// Utils
 import { never } from "../utils/utils";
 
 export interface ILocalFile<T extends ImageType> extends File {

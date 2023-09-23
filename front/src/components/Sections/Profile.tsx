@@ -1,22 +1,28 @@
+// Lens
 import {
   AnyPublication,
   ProfileId,
   useProfile,
   usePublications,
 } from "@lens-protocol/react-web";
+// Components
 import Loader from "../Loader/Loader";
-import UpperSocial from "../../../public/UpperSocial.svg";
-import Identicon from "identicon.js";
-import { useEffect, useState } from "react";
 import PostCard from "../Cards/PostCard";
-import { PencilIcon } from "@heroicons/react/24/outline";
 import CreatorStats from "../Profile/CreatorStats";
 import FragmentSeller from "../Profile/FragmentSeller";
-import { formatNumber } from "@/utils/formatNumber";
-import { ChevronDoubleUpIcon } from "@heroicons/react/24/outline";
 import ProfileMarketplace from "../Profile/ProfileMarketplace";
 import CreatorCard from "../Cards//CreatorCard";
 import FollowButton from "../Buttons/FollowButton";
+// Images
+import Cover from "../../../public/Cover.svg";
+// Identicon
+import Identicon from "identicon.js";
+// React
+import { useEffect, useState } from "react";
+// Heroicons
+import { PencilIcon, ChevronDoubleUpIcon } from "@heroicons/react/24/outline";
+// Utils
+import { formatNumber } from "@/utils/formatNumber";
 
 interface ProfileProps {
   handle: string | string[] | undefined;
@@ -67,10 +73,10 @@ export default function Profile({
                           "https://ipfs.io/ipfs/"
                         )}')`,
                       }
-                    : { backgroundImage: `url('${UpperSocial.src}')` }
+                    : { backgroundImage: `url('${Cover.src}')` }
                 }
               >
-                <div className=" ml-[32px] pt-[181px] flex">
+                <div className=" ml-[32px] pt-[200px] flex">
                   {profile?.picture && "original" in profile?.picture ? (
                     <img
                       height={158}
@@ -83,8 +89,8 @@ export default function Profile({
                     />
                   ) : (
                     <img
-                      height={158}
-                      width={158}
+                      height={180}
+                      width={180}
                       src={`data:image/png;base64,${new Identicon(
                         profile.ownedBy,
                         64
@@ -171,7 +177,7 @@ export default function Profile({
                 </div>
               </div>
             }
-            <div className="mt-[124px] px-[12px] text-gray-500">
+            <div className="mt-[154px] px-[12px] text-gray-500">
               {profile?.bio}
             </div>
             <ProfileMarketplace />

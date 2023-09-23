@@ -1,9 +1,16 @@
+// Utils
 import { formatNumber } from "@/utils/formatNumber";
+// React
 import React, { useState } from "react";
+// Next
 import Image from "next/image";
+// Heroicons
 import { BoltIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
+// Images
 import UpperCoin from "../../../public/UpperCoin.svg";
+// Abi
 import abi from "../../../abis/abi.json";
+// Wagmi
 import {
   useContractWrite,
   usePrepareContractWrite,

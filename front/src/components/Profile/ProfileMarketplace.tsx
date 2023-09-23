@@ -1,6 +1,8 @@
+// React
 import React from "react";
+// Next
 import Image from "next/image";
-
+// Images
 import Rectangle from "../../../public/Rectangle.png";
 
 export default function Marketplace() {

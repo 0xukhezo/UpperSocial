@@ -1,9 +1,14 @@
+// React
 import React from "react";
+// Next
 import Image from "next/image";
+// Images
 import Heart from "../../../public/Heart.svg";
 import Comment from "../../../public/Comment.svg";
 import Bookmark from "../../../public/Bookmark.svg";
+// Utils
 import { formatNumber } from "@/utils/formatNumber";
+// Components
 import LinkProfile from "../Links/LinksProfile";
 
 interface PostCardProps {

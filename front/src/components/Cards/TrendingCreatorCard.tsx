@@ -1,8 +1,14 @@
+// React
 import React from "react";
+// Next
 import Image from "next/image";
+// Lens
 import { useProfile } from "@lens-protocol/react-web";
+// Identicon
 import Identicon from "identicon.js";
-import UpperSocial from "../../../public/UpperSocial.svg";
+// Images
+import Cover from "../../../public/Cover.svg";
+// Compoenents
 import Link from "next/link";
 
 interface TrendingCreatorsProps {
@@ -30,7 +36,7 @@ export default function TrendingCreators({ handle }: TrendingCreatorsProps) {
                     backgroundSize: "cover",
                   }
                 : {
-                    backgroundImage: `url('${UpperSocial.src}')`,
+                    backgroundImage: `url('${Cover.src}')`,
                     backgroundSize: "contain",
                     backgroundRepeat: "no-repeat",
                   }

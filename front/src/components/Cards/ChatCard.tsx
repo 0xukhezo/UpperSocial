@@ -1,6 +1,10 @@
+// Lens
 import { useProfile } from "@lens-protocol/react-web";
+// Idecon
 import Identicon from "identicon.js";
+// Next
 import Image from "next/image";
+// React
 import React from "react";
 
 interface ChatCardProps {

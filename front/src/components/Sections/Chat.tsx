@@ -1,12 +1,15 @@
+// React
 import React, { useEffect, useRef, useState } from "react";
-
+// Components
 import ChatCard from "../Cards/ChatCard";
 import ChatFeed from "../Feeds/ChatFeed";
-
+// XMTP
 import { Client, Signer } from "@xmtp/xmtp-js";
+// Hooks
 import { useEthersSigner } from "@/hooks/useEthersSigner";
-
+// Wagmi
 import { useAccount } from "wagmi";
+// Lens
 import { useProfile, useProfilesOwnedBy } from "@lens-protocol/react-web";
 
 const userWithChat = [

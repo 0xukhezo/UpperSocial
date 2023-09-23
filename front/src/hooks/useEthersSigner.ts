@@ -1,5 +1,8 @@
+// React
 import * as React from "react";
+// Wagmi
 import { type WalletClient, useWalletClient, useNetwork } from "wagmi";
+// ethers
 import { providers } from "ethers";
 
 export function walletClientToSigner(walletClient: WalletClient, chain: any) {

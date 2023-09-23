@@ -1,4 +1,6 @@
+// Next
 import Link from "next/link";
+// React
 import React from "react";
 
 interface LinkProfileProps {
