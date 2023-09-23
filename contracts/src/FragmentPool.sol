@@ -184,8 +184,7 @@ contract FragmentPool is AccessControl, Initializable {
         uint256 amount
     ) public returns (uint256, uint256, uint256) {
         uint256 price = PriceLogic.priceBuy(
-            address(_token),
-            _underlyingAsset,
+            _token.balanceOf(address(this)),
             amount,
             _getFullBalance()
         );
@@ -199,8 +198,7 @@ contract FragmentPool is AccessControl, Initializable {
         uint256 amount
     ) public returns (uint256, uint256, uint256) {
         uint256 price = PriceLogic.priceBuy(
-            address(_token),
-            _underlyingAsset,
+            _token.balanceOf(address(this)),
             amount,
             _getFullBalance()
         );
