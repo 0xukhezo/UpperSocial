@@ -28,10 +28,12 @@ contract CreatorFactory {
     ///////////////////////////////////
 
     /////////////////////////////
+    Manager internal _manager;
+
     uint256 internal _userCounter = 1;
     // Upgradeable by GOV
     address internal _admin;
-    address internal _manager;
+
     address internal immutable _template = address(new FragmentPool());
     mapping(address => address) internal _pools;
 
@@ -42,26 +44,26 @@ contract CreatorFactory {
     );
 
     constructor(address manager) {
-        _manager = manager;
+        _manager = Manager(manager);
     }
 
-    function getManager() external returns (address) {
+    function getManager() external view returns (Manager) {
         return _manager;
     }
 
     function createPool(
-        address underlyingAsset
+        address underlyingAsset,
+        uint256 lensId
     ) external returns (address instance) {
         if (_pools[msg.sender] != address(0)) revert UserAlreadyExist();
+
+        DataTypes.Markets market = _manager.getMarket(underlyingAsset);
+        if (market == DataTypes.Markets.INVALID) revert Errors.InvalidAsset();
         // Verifciations
-        address aPool = Manager(_manager).getPoolAave();
-        Errors.verifyNotZero(aPool, "aPool");
-        address aToken = Manager(_manager).getAToken(underlyingAsset);
-        Errors.verifyNotZero(aToken, "aToken");
-        address lensHub = Manager(_manager).getLens();
+        address lensHub = _manager.getLens();
         Errors.verifyNotZero(lensHub, "lensHub");
         // Check if user has profile
-        LensLogic.verifyOwnership(lensHub);
+        LensLogic.verifyOwnership(lensHub, lensId);
 
         // create vesting instance
         instance = _template.clone();
@@ -72,9 +74,11 @@ contract CreatorFactory {
             FragmentPool.initialize.selector,
             DataTypes.ConfigPool({
                 userId: userId,
+                lensId: lensId,
                 creator: msg.sender,
                 underlyingAsset: underlyingAsset,
-                manager: _manager
+                manager: address(_manager),
+                market: market
             })
         );
         // Initialize

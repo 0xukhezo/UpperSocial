@@ -12,7 +12,7 @@ import "./libs/tokens/FragmentToken.sol";
 import "./libs/logic/PriceLogic.sol";
 import "./libs/logic/AaveLogic.sol";
 import "./libs/logic/LensLogic.sol";
-import "./libs/logic/BorrowLogic.sol";
+import "./libs/logic/LendingLogic.sol";
 import "./libs/utils/DataTypes.sol";
 import "./libs/gov/TimeLock.sol";
 import "./libs/configs/Manager.sol";
@@ -26,22 +26,23 @@ contract FragmentPool is AccessControl, Initializable {
     uint256 public constant PRICE_BASE = 1 ether; // Matic
     uint256 public constant K = 0.016 ether; // Tasa incremento
 
-    uint256 internal _defaultInterest = 10000; // 10%
-    uint256 internal _totalSupply;
+    uint256 internal _defaultInterest = 1000; // 10%
+
     uint256 internal _userId;
+    uint256 internal _lensId;
     uint256 internal _amountSelled = 0;
     address internal _creator;
     address internal _underlyingAsset;
-    address internal _manager;
 
-    // If the comunity whant to disable a creator
+    // Only the community can disable the creator
     bool _isDisabled;
 
-    // GOVERNANCE
+    Manager internal _manager;
     FragmentToken internal _token;
     FragmentGovernance internal _governance;
     TimelockController internal _timelock;
     DataTypes.Loan internal _currentLoan;
+    DataTypes.Markets internal _market;
 
     ///////////////////////////////////
     // ERRORS
@@ -89,20 +90,22 @@ contract FragmentPool is AccessControl, Initializable {
         DataTypes.ConfigPool calldata config
     ) public initializer {
         _userId = config.userId;
-        _manager = config.manager;
+        _lensId = config.lensId;
+        _manager = Manager(config.manager);
         _creator = config.creator;
-        _totalSupply = Manager(config.manager).getDefaultSuppy();
+        _market = config.market;
+
         _underlyingAsset = config.underlyingAsset;
-        _token = new FragmentToken(config.userId, _totalSupply);
+        _token = new FragmentToken(config.userId, 888);
 
         address[] memory proposers = new address[](1);
         proposers[0] = config.creator;
         address[] memory executors;
-        executors[0] = Manager(config.manager).getExecutor();
+        executors[0] = _manager.getExecutor();
         _timelock = new TimeLock(0, proposers, executors, address(0));
         _governance = new FragmentGovernance(config.userId, _token, _timelock);
 
-        _grantRole(DEFAULT_ADMIN_ROLE, Manager(config.manager).getAdmin());
+        _grantRole(DEFAULT_ADMIN_ROLE, _manager.getAdmin());
         _setupRole(GOV_ROLE, address(_governance));
     }
 
@@ -131,10 +134,16 @@ contract FragmentPool is AccessControl, Initializable {
             state: DataTypes.LoanState.PENDING
         });
 
-        BorrowLogic.validateBorrowRange(loan.loanId, _getFullBalance(), amount);
-        // It should  had enought liquidity on Aave
-        AaveLogic.withdraw(
-            Manager(_manager).getPoolAave(),
+        LendingLogic.validateBorrowRange(
+            loan.loanId,
+            _getFullBalance(),
+            amount
+        );
+        // It should  had enought liquidity on  the defi market
+
+        LendingLogic.withdraw(
+            _market,
+            _manager.getPool(_underlyingAsset),
             _underlyingAsset,
             amount
         );
@@ -160,7 +169,7 @@ contract FragmentPool is AccessControl, Initializable {
             address(this),
             amount
         );
-        // Deposit on Aave
+        // Deposit on the defi markets
         _rebalanceTokens();
         // Finalize the loan
         _currentLoan.state = DataTypes.LoanState.ENDED;
@@ -177,9 +186,6 @@ contract FragmentPool is AccessControl, Initializable {
         _rebalanceTokens();
     }
 
-    // BUG when you buy multiple fragments at the same time
-    // The calculation of the price are wrong
-    // WE NEED TO FORCE TO ONLY BUY ONE BY ONE
     function buyPrice(
         uint256 amount
     ) public returns (uint256, uint256, uint256) {
@@ -290,22 +296,26 @@ contract FragmentPool is AccessControl, Initializable {
     // PRIVATE
     ///////////////////////////////////////////////
     function _rebalanceTokens() internal {
-        uint256 amount = IERC20(_underlyingAsset).balanceOf(address(this));
-        if (amount > 0) {
-            AaveLogic.deposit(
-                Manager(_manager).getPoolAave(),
-                _underlyingAsset,
-                amount
-            );
+        if (_market != DataTypes.NONE) {
+            uint256 amount = IERC20(_underlyingAsset).balanceOf(address(this));
+            if (amount > 0) {
+                LendingLogic.deposit(
+                    _manager.getPool(_underlyingAsset),
+                    _underlyingAsset,
+                    amount
+                );
+            }
         }
     }
 
+    // Raw + Aave + Compound
     function _getFullBalance() internal returns (uint256) {
         return
             IERC20(_underlyingAsset).balanceOf(address(this)) +
             AaveLogic.balanceOf(
-                Manager(_manager).getAToken(_underlyingAsset),
+                _manager.getAToken(_underlyingAsset),
                 address(this)
-            );
+            ) +
+            CompoundLogic.balanceOf(address(0), address(this));
     }
 }

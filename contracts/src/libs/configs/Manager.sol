@@ -60,11 +60,11 @@ contract Manager {
     // https://docs.aave.com/developers/deployed-contracts/v3-testnet-addresses
     // WETH 0xc199807AF4fEDB02EE567Ed0FeB814A077de4802
     // POOL: 0xcC6114B983E4Ed2737E9BD3961c9924e6216c704
-    function setPoolAave(address aave) external onlyAdmin {
+    function setAave(address aave) external onlyAdmin {
         _aave = aave;
     }
 
-    function getPoolAave() external view returns (address) {
+    function getAave() external view returns (address) {
         return _aave;
     }
 
@@ -107,6 +107,15 @@ contract Manager {
     }
 
     //////////////////////////////////
+    function getPool(address underlyingAsset) external view returns (address) {
+        if (_allowedAssets[underlyingAsset] == DataTypes.Markets.AAVE) {
+            return this.getAave();
+        } else if (_allowedAssets[underlyingAsset] == DataTypes.Markets.COMP) {
+            return this.getCompound();
+        }
+        // NO defi market
+        return address(0);
+    }
 
     function getDefaultSuppy() external pure returns (uint256) {
         return _defaultSupply;

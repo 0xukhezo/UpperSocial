@@ -17,7 +17,7 @@ contract FragmentToken is BaseERC20, Ownable, ERC20Votes {
     }
 
     function mint(address to, uint256 amount) external onlyOwner {
-        // ADd validation total supply
+        // TODO: validate total supply no more max supply
         _mint(to, amount);
     }
 

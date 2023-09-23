@@ -11,8 +11,8 @@ library LensLogic {
     error NoDefaultProfileSelected();
 
     // LOGICS
-    function verifyOwnership(address lens) internal view {
-        if (IERC721(lens).balanceOf(msg.sender) == 0) revert NoLensProfile();
+    function verifyOwnership(address lens, uint256 lensId) internal view {
+        if (IERC721(lens).ownerOf(lensId) == msg.sender) revert NoLensProfile();
     }
 
     function getProfile(

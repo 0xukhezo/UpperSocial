@@ -4,9 +4,11 @@ pragma solidity 0.8.19;
 library DataTypes {
     struct ConfigPool {
         uint256 userId;
+        uint256 lensId;
         address creator;
         address underlyingAsset;
         address manager;
+        Markets market;
     }
 
     enum LoanState {

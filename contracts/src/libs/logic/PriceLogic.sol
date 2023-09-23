@@ -11,7 +11,7 @@ library PriceLogic {
         uint256 currentFragment,
         uint256 amount,
         uint256 currentSupply
-    ) internal view returns (uint256) {
+    ) internal pure returns (uint256) {
         uint256 fullAmount = 0;
 
         for (uint256 i = 0; i < amount; ) {
@@ -34,7 +34,7 @@ library PriceLogic {
         uint256 currentFragment,
         uint256 amount,
         uint256 currentSupply
-    ) internal view returns (uint256) {
+    ) internal pure returns (uint256) {
         uint256 fullAmount = 0;
         for (uint256 i = 0; i < amount; ) {
             uint256 newBalance = currentFragment + i;

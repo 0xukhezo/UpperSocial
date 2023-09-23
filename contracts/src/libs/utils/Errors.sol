@@ -40,6 +40,8 @@ library Errors {
     error AmountToLow();
     error ApprovalFailed(address token);
     error NotAdmin();
+    error InvalidAsset();
+    error OnlyCreator();
 
     ///////////////////////////////////////////
     ///   FUNCTIONS
