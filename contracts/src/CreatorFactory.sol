@@ -72,7 +72,7 @@ contract CreatorFactory {
             FragmentPool.initialize.selector,
             DataTypes.ConfigPool({
                 userId: userId,
-                user: msg.sender,
+                creator: msg.sender,
                 underlyingAsset: underlyingAsset,
                 manager: _manager
             })

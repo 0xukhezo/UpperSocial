@@ -4,8 +4,7 @@ pragma solidity 0.8.19;
 library DataTypes {
     struct ConfigPool {
         uint256 userId;
-        uint256 totalSupply;
-        address user;
+        address creator;
         address underlyingAsset;
         address manager;
     }

@@ -90,13 +90,13 @@ contract FragmentPool is AccessControl, Initializable {
     ) public initializer {
         _userId = config.userId;
         _manager = config.manager;
-        _creator = config.user;
+        _creator = config.creator;
         _totalSupply = Manager(config.manager).getDefaultSuppy();
         _underlyingAsset = config.underlyingAsset;
         _token = new FragmentToken(config.userId, _totalSupply);
 
         address[] memory proposers = new address[](1);
-        proposers[0] = config.user;
+        proposers[0] = config.creator;
         address[] memory executors;
         executors[0] = Manager(config.manager).getExecutor();
         _timelock = new TimeLock(0, proposers, executors, address(0));

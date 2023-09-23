@@ -68,11 +68,11 @@ contract Manager {
     }
 
     function setAsset(address asset, address aToken) external onlyAdmin {
-        _allowedAssets[asset] = aToken;
+        _aAaveAssets[asset] = aToken;
     }
 
     function getAToken(address asset) external view returns (address) {
-        return _allowedAssets[asset];
+        return _aAaveAssets[asset];
     }
 
     //////////////////////////////////

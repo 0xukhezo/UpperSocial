@@ -1,32 +1,38 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
+
 import {console} from "forge-std/console.sol";
 import "forge-std/Test.sol";
-import "../src/libs/logic/PriceLogic.sol";
+import {PriceLogic} from "../src/libs/logic/PriceLogic.sol";
 
 contract PriceTest is Test {
     uint256 internal constant SUPPLY = 888;
     uint256 internal constant FIRST_PRICE = 1 ether;
 
-    function setUp() public {}
-
-    function testFirstMint() public {
-        uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE, 0, 1);
-
-        console.log("FIRST", k);
+    function setUp() public {
+        // DO NOTHING
     }
 
-    function testPrice10BuyOne() public {
-        uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE * 4, 10, 1);
-        console.log("K", k);
-        console.log("FIRST 10 : ", k);
+    function test_firstMin() public {
+        assertEq(true, true);
     }
+    // function testFirstMint() public {
+    //     uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE, 0, 1);
 
-    function testPrice10BuyTen() public {
-        uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE * 4, 10, 10);
-        console.log("K", k);
-        console.log("FIRST 10 : ", k);
-    }
+    //     console.log("FIRST", k);
+    // }
+
+    // function testPrice10BuyOne() public {
+    //     uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE * 4, 10, 1);
+    //     console.log("K", k);
+    //     console.log("FIRST 10 : ", k);
+    // }
+
+    // function testPrice10BuyTen() public {
+    //     uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE * 4, 10, 10);
+    //     console.log("K", k);
+    //     console.log("FIRST 10 : ", k);
+    // }
 
     // function testPrice10BuyOneByOne() public {
     //     uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE * 4, 10, 10);

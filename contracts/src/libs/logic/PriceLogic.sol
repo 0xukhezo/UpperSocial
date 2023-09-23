@@ -31,7 +31,7 @@ library PriceLogic {
     }
 
     function priceSell(
-        address currentFragment,
+        uint256 currentFragment,
         uint256 amount,
         uint256 currentSupply
     ) internal view returns (uint256) {
