@@ -2,26 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+::-webkit-scrollbar {display: none;}
+
+@keyframes show-feed {
+    from {
+      opacity: 0;
+    }
+    to{
+      opacity: 1;
+    }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+
+.home {
+    width: 50%; 
+    opacity:1
+}
+
+.homeClose {
+    width: 0%;
+    opacity:0;
+    transition: all 1.2s ease-out 0.2s;
+}
+
+.homeExpand {
+    width:100%;
+    opacity:0;
+    transition: width 1.2s ease-out 0.2s, 
+    opacity 1.2s linear 1.2s;
+}
+
+.feed{
+    opacity:0;
+    animation: show-feed 1.2s linear forwards;
 }
