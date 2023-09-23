@@ -1,8 +1,14 @@
-import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
+// React
 import React, { useEffect, useRef, useState } from "react";
-import MessageCard from "../Cards/MessageCard";
+// Next
 import Image from "next/image";
+// Heroicons
+import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
+// Components
+import MessageCard from "../Cards/MessageCard";
+// Image
 import UpperSocial from "../../../public/UpperSocial.svg";
+
 interface ChatFeedProps {
   messages: any;
   profile: any;

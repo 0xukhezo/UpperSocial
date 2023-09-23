@@ -1,22 +1,28 @@
+// Lens
 import {
   AnyPublication,
   ProfileId,
   useProfile,
   usePublications,
 } from "@lens-protocol/react-web";
+// Components
 import Loader from "../Loader/Loader";
-import UpperSocial from "../../../public/UpperSocial.svg";
-import Identicon from "identicon.js";
-import { useEffect, useState } from "react";
 import PostCard from "../Cards/PostCard";
-import { PencilIcon } from "@heroicons/react/24/outline";
 import CreatorStats from "../Profile/CreatorStats";
 import FragmentSeller from "../Profile/FragmentSeller";
-import { formatNumber } from "@/utils/formatNumber";
-import { ChevronDoubleUpIcon } from "@heroicons/react/24/outline";
 import ProfileMarketplace from "../Profile/ProfileMarketplace";
 import CreatorCard from "../Cards//CreatorCard";
 import FollowButton from "../Buttons/FollowButton";
+// Images
+import UpperSocial from "../../../public/UpperSocial.svg";
+// Identicon
+import Identicon from "identicon.js";
+// React
+import { useEffect, useState } from "react";
+// Heroicons
+import { PencilIcon, ChevronDoubleUpIcon } from "@heroicons/react/24/outline";
+// Utils
+import { formatNumber } from "@/utils/formatNumber";
 
 interface ProfileProps {
   handle: string | string[] | undefined;

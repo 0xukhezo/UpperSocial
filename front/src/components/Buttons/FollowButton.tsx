@@ -1,10 +1,13 @@
+// React
+import React from "react";
+
+//Lens
 import {
   ProfileFragment,
   ProfileOwnedByMeFragment,
   useFollow,
   useUnfollow,
 } from "@lens-protocol/react-web";
-import React from "react";
 
 interface FollowButtonProps {
   followee: ProfileFragment;

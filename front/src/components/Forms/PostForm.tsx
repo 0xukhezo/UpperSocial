@@ -1,3 +1,4 @@
+// Lens
 import {
   ContentFocus,
   ProfileOwnedByMe,
@@ -5,12 +6,14 @@ import {
   useCreatePost,
   useSelfFundedFallback,
 } from "@lens-protocol/react-web";
+// React
 import { toast } from "react-hot-toast";
-
+// Next
 import Image from "next/image";
+// Images
 import Play from "../../../public/Play.svg";
 import Photo from "../../../public/Photo.svg";
-
+// Utils
 import { upload } from "../../utils/upload";
 import { never } from "../../utils/utils";
 

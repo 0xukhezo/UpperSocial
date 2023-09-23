@@ -1,8 +1,13 @@
+// React
 import React from "react";
+// Next
 import Image from "next/image";
+// Lens
 import { useWalletLogin } from "@lens-protocol/react-web";
+// Wagmi
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
+// Images
 import Lens from "../../../public/Lens.svg";
 
 export default function LoginButton() {

@@ -1,5 +1,8 @@
-import { ProfileId, useFeed } from "@lens-protocol/react-web";
+// React
 import React from "react";
+// Lens
+import { ProfileId, useFeed } from "@lens-protocol/react-web";
+// Components
 import PostCard from "../Cards/PostCard";
 import Loader from "../Loader/Loader";
 

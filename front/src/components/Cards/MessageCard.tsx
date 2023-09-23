@@ -1,5 +1,8 @@
+// React
 import React from "react";
+// Identicon
 import Identicon from "identicon.js";
+// Next
 import Image from "next/image";
 
 interface MessageCardProps {

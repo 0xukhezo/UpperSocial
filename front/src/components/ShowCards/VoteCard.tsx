@@ -1,8 +1,12 @@
+// Utils
 import { formatNumber } from "@/utils/formatNumber";
+// React
 import React, { useState } from "react";
+// Next
 import Image from "next/image";
-
+// Images
 import Heart from "../../../public/Heart.svg";
+// Components
 import WorldCoinButton from "../Buttons/WorldCoinButton";
 
 export default function VoteCard() {

@@ -1,4 +1,6 @@
+// Lens
 import { useActiveWallet } from "@lens-protocol/react-web";
+// Components
 import Loader from "../components/Loader/Loader";
 import Home from "../components/Sections/Home";
 

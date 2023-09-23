@@ -1,3 +1,4 @@
+// Lens
 import { useWalletLogout } from "@lens-protocol/react-web";
 
 export default function LogoutButton() {

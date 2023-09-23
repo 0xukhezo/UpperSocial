@@ -1,9 +1,12 @@
+// React
 import React from "react";
+// Components
 import TrendingCreatorCard from "../Cards/TrendingCreatorCard";
 import PostForm from "../Forms/PostForm";
-import { ProfileOwnedByMe, useProfilesOwnedBy } from "@lens-protocol/react-web";
 import InfiniteFeed from "../Feeds/InfiniteFeed";
 import LeaderBoard from "../ShowCards/LeaderBoard";
+// Lens
+import { ProfileOwnedByMe, useProfilesOwnedBy } from "@lens-protocol/react-web";
 
 interface FeedProps {
   wallet: string;

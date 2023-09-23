@@ -1,12 +1,17 @@
+// Steam
 import { Readable } from "stream";
-
-import { WebBundlr } from "@bundlr-network/client";
-import { Web3Provider } from "@ethersproject/providers";
-import { ImageType } from "@lens-protocol/react-web";
 import { ReadableWebToNodeStream } from "readable-web-to-node-stream";
+// Bundlr
+import { WebBundlr } from "@bundlr-network/client";
+// Ethers
+import { Web3Provider } from "@ethersproject/providers";
+// Lens
+import { ImageType } from "@lens-protocol/react-web";
+// Wagmi
 import { getWalletClient } from "wagmi/actions";
-
+// Hooks
 import { ILocalFile } from "../hooks/useFileSelect";
+// Utils
 import { never } from "./utils";
 
 const TOP_UP = "200000000000000000"; // 0.2 MATIC

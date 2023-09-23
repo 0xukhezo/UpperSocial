@@ -1,8 +1,14 @@
+// React
 import React from "react";
+// Next
 import Image from "next/image";
+// Lens
 import { useProfile } from "@lens-protocol/react-web";
+// Identicon
 import Identicon from "identicon.js";
+// Images
 import UpperSocial from "../../../public/UpperSocial.svg";
+// Compoenents
 import Link from "next/link";
 
 interface TrendingCreatorsProps {

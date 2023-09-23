@@ -1,6 +1,9 @@
+// React
 import React from "react";
-import UpperSocial from "../../../public/UpperSocial.svg";
+// Next
 import Image from "next/image";
+// Images
+import UpperSocial from "../../../public/UpperSocial.svg";
 
 export default function Loader() {
   return (

@@ -1,9 +1,12 @@
+// React
 import React from "react";
+// Wagmi
 import {
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
+// Abis
 import abi from "../../../abis/abi.json";
 
 export default function CreatorCard() {
