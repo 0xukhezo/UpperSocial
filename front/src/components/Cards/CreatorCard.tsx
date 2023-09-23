@@ -1,6 +1,6 @@
 // React
 import React, { useState } from "react";
-//Components
+// Components
 import TokensModal from "../Modals/CreatorModal";
 
 interface CreatorCardprops {

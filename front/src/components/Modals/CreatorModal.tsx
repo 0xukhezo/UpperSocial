@@ -1,7 +1,8 @@
+// React
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+// Heroicons
 import { XMarkIcon } from "@heroicons/react/24/outline";
-
 // Wagmi
 import {
   useContractWrite,
