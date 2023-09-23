@@ -11,38 +11,54 @@ contract PriceTest is Test {
     function setUp() public {}
 
     function testFirstMint() public {
-        uint256 k = PriceLogic.getPrice(FIRST_PRICE, 0, 1);
+        uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE, 0, 1);
 
         console.log("FIRST", k);
     }
 
-    function testPrice10() public {
-        uint256 k = PriceLogic.getPrice(FIRST_PRICE * 4, 10, 1);
+    function testPrice10BuyOne() public {
+        uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE * 4, 10, 1);
         console.log("K", k);
         console.log("FIRST 10 : ", k);
     }
 
-    function testPrice100() public {
-        uint256 k = PriceLogic.getPrice(FIRST_PRICE * 20, 100, 1);
+    function testPrice10BuyTen() public {
+        uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE * 4, 10, 10);
         console.log("K", k);
-        console.log("FIRST 100 : ", k);
+        console.log("FIRST 10 : ", k);
     }
 
-    function testPrice500() public {
-        uint256 k = PriceLogic.getPrice(FIRST_PRICE * 50, 500, 1);
-        console.log("K", k);
-        console.log("FIRST 500 : ", k);
-    }
+    // function testPrice10BuyOneByOne() public {
+    //     uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE * 4, 10, 10);
+    //     console.log("K", k);
+    //     console.log("FIRST 10 : ", k);
+    // }
 
-    function testPrice800() public {
-        uint256 k = PriceLogic.getPrice(FIRST_PRICE * 50, 800, 1);
-        console.log("K", k);
-        console.log("FIRST 800 : ", k);
-    }
+    // function testPrice100() public {
+    //     uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE * 20, 100, 1);
+    //     console.log("K", k);
+    //     console.log("FIRST 100 : ", k);
+    // }
 
-    function testPrice880() public {
-        uint256 k = PriceLogic.getPrice(FIRST_PRICE * 2000, 880, 1);
-        console.log("K", k);
-        console.log("FIRST 880 : ", k);
-    }
+    // function testPrice500() public {
+    //     uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE * 50, 500, 1);
+    //     console.log("K", k);
+    //     console.log("FIRST 500 : ", k);
+    // }
+
+    // function testPrice800() public {
+    //     uint256 k = PriceLogic.calculatePriceFragment(FIRST_PRICE * 50, 800, 1);
+    //     console.log("K", k);
+    //     console.log("FIRST 800 : ", k);
+    // }
+
+    // function testPrice880() public {
+    //     uint256 k = PriceLogic.calculatePriceFragment(
+    //         FIRST_PRICE * 2000,
+    //         880,
+    //         1
+    //     );
+    //     console.log("K", k);
+    //     console.log("FIRST 880 : ", k);
+    // }
 }
