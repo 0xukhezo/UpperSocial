@@ -236,7 +236,7 @@ contract FragmentPool is AccessControl, Initializable {
             protocolFee
         );
         // Send fragments
-        IERC20(address(_token)).safeTransfer(msg.sender, 1);
+        _token.mint(msg.sender, amount);
         // RebalancePosition
         _rebalanceTokens();
         unchecked {
@@ -260,8 +260,7 @@ contract FragmentPool is AccessControl, Initializable {
         );
 
         // Send fragments to the poll
-        IERC20(address(_token)).safeTransferFrom(msg.sender, address(this), 1);
-
+        _token.burn(msg.sender, amount);
         // Withdraw specific amount
         LendingLogic.withdraw(
             _market,
@@ -312,7 +311,7 @@ contract FragmentPool is AccessControl, Initializable {
     }
 
     // Raw + Aave + Compound
-    function _getFullBalance() internal returns (uint256) {
+    function _getFullBalance() internal view returns (uint256) {
         return
             IERC20(_underlyingAsset).balanceOf(address(this)) +
             AaveLogic.balanceOf(

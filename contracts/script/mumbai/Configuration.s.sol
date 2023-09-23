@@ -8,7 +8,7 @@ import "../../src/libs/configs/Manager.sol";
 import "../../src/libs/utils/DataTypes.sol";
 
 contract DeployConfigurationScript is DeployerHelper {
-    address immutable ADMIN = 0x2adB75AB75957Cb1A13c23191E153aF167fe7f73;
+    address immutable TREASURY = 0x2adB75AB75957Cb1A13c23191E153aF167fe7f73;
     // AAVE
     address immutable AAVE = 0xcC6114B983E4Ed2737E9BD3961c9924e6216c704;
     address immutable WETH = 0xc199807AF4fEDB02EE567Ed0FeB814A077de4802;
@@ -24,7 +24,7 @@ contract DeployConfigurationScript is DeployerHelper {
     function run() external broadcast {
         Addresses memory addresses = _decodeJson();
 
-        Manager manager = new Manager(ADMIN, ADMIN, ADMIN);
+        Manager manager = new Manager(msg.sender, TREASURY, msg.sender);
         manager.setLens(LENS);
 
         manager.setAave(AAVE);
