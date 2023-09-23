@@ -10,9 +10,12 @@ import Identicon from "identicon.js";
 import { useEffect, useState } from "react";
 import PostCard from "../Cards/PostCard";
 import { PencilIcon } from "@heroicons/react/24/outline";
+import CreatorStats from "../Profile/CreatorStats";
+import FragmentSeller from "../Profile/FragmentSeller";
 import { formatNumber } from "@/utils/formatNumber";
 import { ChevronDoubleUpIcon } from "@heroicons/react/24/outline";
-
+import ProfileMarketplace from "../Profile/ProfileMarketplace";
+import CreatorCard from "../Cards//CreatorCard";
 import FollowButton from "../Buttons/FollowButton";
 
 interface ProfileProps {
@@ -43,6 +46,8 @@ export default function Profile({
     });
     setFeed(publicationsPost);
   }, [publications]);
+
+  const poolAddress = "0x00";
 
   return (
     <>
@@ -169,7 +174,7 @@ export default function Profile({
             <div className="mt-[124px] px-[12px] text-gray-500">
               {profile?.bio}
             </div>
-
+            <ProfileMarketplace />
             <div className="px-4">
               {feed &&
                 feed?.length > 0 &&
@@ -196,7 +201,23 @@ export default function Profile({
                 })}
             </div>
           </section>
-          <section className="overflow-auto h-full">2 Section</section>
+          <section className="overflow-auto h-full">
+            <CreatorStats />
+            {profile?.name ? (
+              <FragmentSeller name={profile?.name} poolAddress={poolAddress} />
+            ) : (
+              profile && (
+                <FragmentSeller
+                  name={
+                    profile.handle.charAt(0).toUpperCase() +
+                    profile.handle.slice(1, profile.handle.indexOf("."))
+                  }
+                  poolAddress={poolAddress}
+                />
+              )
+            )}
+            {isMyProfile && <CreatorCard />}
+          </section>
         </div>
       ) : (
         <div className="grid h-screen place-items-center">

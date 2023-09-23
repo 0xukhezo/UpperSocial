@@ -16,8 +16,12 @@ import UpperCoin from "../../../public/UpperCoin.svg";
 import Parachute from "../../../public/Parachute.svg";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useProfilesOwnedByMe } from "@lens-protocol/react-web";
+import {
+  ProfileOwnedByMe,
+  useProfilesOwnedByMe,
+} from "@lens-protocol/react-web";
 import LogoutButton from "../Buttons/LogoutButton";
+import PostModal from "../Modals/PostModal";
 
 const navigation = [
   { name: "Home", href: "/", icon: HomeIcon },
@@ -54,6 +58,10 @@ export default function SideBar({ page, isProfile, isChat }: SideBarProps) {
     limit: 10,
   });
   const router = useRouter();
+
+  const getOpenModal = (modalState: boolean) => {
+    setModalOpen(modalState);
+  };
 
   return (
     <>
@@ -368,6 +376,12 @@ export default function SideBar({ page, isProfile, isChat }: SideBarProps) {
           </main>
         </div>
       </div>
+      {modalOpen && data && (
+        <PostModal
+          getOpenModal={getOpenModal}
+          publisher={data[0] as ProfileOwnedByMe}
+        />
+      )}
     </>
   );
 }
