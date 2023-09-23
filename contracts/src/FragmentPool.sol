@@ -262,12 +262,14 @@ contract FragmentPool is AccessControl, Initializable {
         // Send fragments to the poll
         IERC20(address(_token)).safeTransferFrom(msg.sender, address(this), 1);
 
-        // Withdraw Amount
-        AaveLogic.withdraw(
-            Manager(_manager).getPoolAave(),
+        // Withdraw specific amount
+        LendingLogic.withdraw(
+            _market,
+            _manager.getPool(_underlyingAsset),
             _underlyingAsset,
             totalPrice
         );
+
         if (_isDisabled) {
             // In case the creator is disabled we don't discount the amount for the creator
             IERC20(_underlyingAsset).safeTransfer(msg.sender, totalPrice);
