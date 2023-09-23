@@ -8,6 +8,10 @@ library DataTypes {
         address creator;
         address underlyingAsset;
         address manager;
+        address token;
+        address debToken;
+        address pricing;
+        address factory;
         Markets market;
     }
 
@@ -18,7 +22,6 @@ library DataTypes {
 
     struct Loan {
         uint256 loanId;
-        uint256 amount;
         uint256 interest;
         uint256 timestamp;
         LoanState state;

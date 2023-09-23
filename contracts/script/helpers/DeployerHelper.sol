@@ -14,6 +14,7 @@ contract DeployerHelper is Script {
         address apeCoin;
         address creatorFactory;
         address manager;
+        address governance;
     }
 
     string constant path = "./deployments/deploy-";
@@ -47,6 +48,10 @@ contract DeployerHelper is Script {
                 manager: abi.decode(
                     persistedJson.parseRaw(".manager"),
                     (address)
+                ),
+                governance: abi.decode(
+                    persistedJson.parseRaw(".governance"),
+                    (address)
                 )
             });
 
@@ -56,7 +61,8 @@ contract DeployerHelper is Script {
                 deployer: address(0),
                 apeCoin: address(0),
                 creatorFactory: address(0),
-                manager: address(0)
+                manager: address(0),
+                governance: address(0)
             });
             _encodeJson(newaddresses);
             return newaddresses;
@@ -69,6 +75,7 @@ contract DeployerHelper is Script {
         vm.serializeAddress(json, "deployer", addresses.deployer);
         vm.serializeAddress(json, "apeCoin", addresses.apeCoin);
         vm.serializeAddress(json, "manager", addresses.manager);
+        vm.serializeAddress(json, "governance", addresses.manager);
         string memory output = vm.serializeAddress(
             json,
             "creatorFactory",

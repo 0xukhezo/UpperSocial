@@ -17,7 +17,9 @@ contract Manager {
     address internal _aave;
     // Compound
     address internal _compound;
-
+    ///////////////
+    address internal _pricing;
+    address internal _governance;
     // Allowed assets
     mapping(address => DataTypes.Markets) internal _allowedAssets;
     // asset => aToken
@@ -28,6 +30,10 @@ contract Manager {
     uint256 internal constant _protocolFee = 5000;
     uint256 internal constant _creatorFee = 5000;
     uint256 internal constant _defaultSupply = 888;
+    /////////////////////////////////////
+    // GOV
+    //////////////////////////////////////
+    address[] internal _executors;
 
     /////////////////////////////////////
     // MODIFIERS
@@ -41,7 +47,7 @@ contract Manager {
     constructor(address admin, address treausry, address executor) {
         _admin = admin;
         _treasury = treausry;
-        _executor = executor;
+        _executors.push(executor);
     }
 
     //////////////////////////////////////
@@ -109,6 +115,23 @@ contract Manager {
         return _allowedAssets[underlyinAsset];
     }
 
+    /////////////////////////////////
+    function setPricing(address pricing) external onlyAdmin {
+        _pricing = pricing;
+    }
+
+    function getPricing() external view returns (address) {
+        return _pricing;
+    }
+
+    function setGovernance(address gov) external onlyAdmin {
+        _governance = gov;
+    }
+
+    function getGovernance() external returns (address) {
+        return _governance;
+    }
+
     //////////////////////////////////
     function getPool(address underlyingAsset) external view returns (address) {
         if (_allowedAssets[underlyingAsset] == DataTypes.Markets.AAVE) {
@@ -140,7 +163,7 @@ contract Manager {
         return _admin;
     }
 
-    function getExecutor() external view returns (address) {
-        return _executor;
+    function getExecutors() external view returns (address[] memory) {
+        return _executors;
     }
 }

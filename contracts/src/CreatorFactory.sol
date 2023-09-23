@@ -1,35 +1,32 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import {console} from "forge-std/console.sol";
-
-import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 import "./libs/proxy/FragmentUpgradeableProxy.sol";
+
+import "./libs/tokens/FragmentToken.sol";
+import "./libs/tokens/DebToken.sol";
 import "./libs/utils/DataTypes.sol";
 import "./libs/utils/Errors.sol";
 import "./libs/configs/Manager.sol";
 import "./libs/logic/LensLogic.sol";
 import "./FragmentPool.sol";
+import "./Governance.sol";
 
 contract CreatorFactory {
     using Clones for address;
-    using SafeERC20 for IERC20;
 
     ///////////////////////////////////
     // ERRORS
     ///////////////////////////////////
 
     error UserAlreadyExist();
-
+    error UserNotExist();
     ///////////////////////////////////
 
     /////////////////////////////
     Manager internal _manager;
-
     uint256 internal _userCounter = 1;
     // Upgradeable by GOV
     address internal _admin;
@@ -51,6 +48,10 @@ contract CreatorFactory {
         return _manager;
     }
 
+    function getPool(address user) external view returns (address) {
+        return _pools[user];
+    }
+
     function createPool(
         address underlyingAsset,
         uint256 lensId
@@ -69,6 +70,11 @@ contract CreatorFactory {
         instance = _template.clone();
 
         uint256 userId = _userCounter;
+
+        address token = address(new FragmentToken(userId, 888));
+        address debToken = address(new DebToken(underlyingAsset));
+        address pricing = Manager(_manager).getPricing();
+
         // Create contract upgradeable
         bytes memory data = abi.encodeWithSelector(
             FragmentPool.initialize.selector,
@@ -78,7 +84,11 @@ contract CreatorFactory {
                 creator: msg.sender,
                 underlyingAsset: underlyingAsset,
                 manager: address(_manager),
-                market: market
+                market: market,
+                pricing: pricing,
+                token: token,
+                debToken: debToken,
+                factory: address(this)
             })
         );
         // Initialize

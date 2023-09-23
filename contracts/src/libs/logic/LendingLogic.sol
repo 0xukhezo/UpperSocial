@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
+import "../configs/Manager.sol";
 import "../utils/DataTypes.sol";
 import "./AaveLogic.sol";
 import "./CompoundLogic.sol";
@@ -44,7 +45,7 @@ library LendingLogic {
         uint256 loanId,
         uint256 totalAmount,
         uint256 amount
-    ) internal pure {
+    ) external pure {
         if (loanId < 5) {
             uint256 maxCap = (totalAmount * 5000) / 1 ether;
             if (amount >= maxCap) revert TooHighAmount();

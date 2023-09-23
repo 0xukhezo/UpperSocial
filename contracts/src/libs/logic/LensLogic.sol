@@ -3,7 +3,6 @@ pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "../lens/interfaces/ILensHub.sol";
-import {DataTypes as LensDataTypes} from "../lens/DataTypes.sol";
 
 library LensLogic {
     // ERRORS
@@ -15,13 +14,14 @@ library LensLogic {
         if (IERC721(lens).ownerOf(lensId) == msg.sender) revert NoLensProfile();
     }
 
-    function getProfile(
-        address lens
-    ) internal view returns (LensDataTypes.ProfileStruct memory) {
-        uint256 profileId = ILensHub(lens).defaultProfile(msg.sender);
-        if (profileId == 0) {
-            revert NoDefaultProfileSelected();
-        }
-        return ILensHub(lens).getProfile(profileId);
-    }
+    // NOT FOR NOW
+    // function getProfile(
+    //     address lens
+    // ) internal view returns (LensDataTypes.ProfileStruct memory) {
+    //     uint256 profileId = ILensHub(lens).defaultProfile(msg.sender);
+    //     if (profileId == 0) {
+    //         revert NoDefaultProfileSelected();
+    //     }
+    //     return ILensHub(lens).getProfile(profileId);
+    // }
 }

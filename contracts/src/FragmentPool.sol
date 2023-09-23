@@ -9,40 +9,31 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "./libs/tokens/FragmentToken.sol";
-import "./libs/logic/PriceLogic.sol";
-import "./libs/logic/AaveLogic.sol";
-import "./libs/logic/LensLogic.sol";
+import "./libs/tokens/DebToken.sol";
+
 import "./libs/logic/LendingLogic.sol";
+
 import "./libs/utils/DataTypes.sol";
 import "./libs/gov/TimeLock.sol";
-import "./libs/configs/Manager.sol";
-import "./FragmentGovernance.sol";
-import "./CreatorFactory.sol";
 
-contract FragmentPool is AccessControl, Initializable {
+import "./libs/configs/Manager.sol";
+import "./libs/configs/Pricing.sol";
+
+import "./CreatorFactory.sol";
+import "./Governance.sol";
+
+contract FragmentPool is Initializable {
     using SafeERC20 for IERC20;
-    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
-    bytes32 public constant GOV_ROLE = keccak256("GOV_ROLE");
-    uint256 public constant PRICE_BASE = 1 ether; // Matic
-    uint256 public constant K = 0.016 ether; // Tasa incremento
 
     uint256 internal _defaultInterest = 1000; // 10%
 
-    uint256 internal _userId;
-    uint256 internal _lensId;
-    uint256 internal _amountSelled = 0;
-    address internal _creator;
-    address internal _underlyingAsset;
-
     // Only the community can disable the creator
     bool _isDisabled;
+    address _factory;
+    address _govManager;
+    DataTypes.ConfigPool _config;
 
-    Manager internal _manager;
-    FragmentToken internal _token;
-    FragmentGovernance internal _governance;
-    TimelockController internal _timelock;
     DataTypes.Loan internal _currentLoan;
-    DataTypes.Markets internal _market;
 
     ///////////////////////////////////
     // ERRORS
@@ -54,7 +45,7 @@ contract FragmentPool is AccessControl, Initializable {
     error NothingToRepay();
     error AmountNotCoverTheDebt();
     error CreatorDisabled();
-
+    error NotAdmin();
     ///////////////////////////////////
     // EVENTS
     /////////////////////////////////
@@ -84,55 +75,56 @@ contract FragmentPool is AccessControl, Initializable {
         _;
     }
 
+    modifier onlyAdmin() {
+        if (Manager(_config.manager).getAdmin() == msg.sender)
+            revert NotAdmin();
+        _;
+    }
+
+    modifier onlyGov() {
+        if (Governance(_govManager).getGovernance(msg.sender) == address(0))
+            revert NotAdmin();
+        _;
+    }
+
     /////////////////////////////////////////////////////
+    constructor() {
+        // Nothing To do
+    }
 
-    function initialize(
-        DataTypes.ConfigPool calldata config
-    ) public initializer {
-        _userId = config.userId;
-        _lensId = config.lensId;
-        _manager = Manager(config.manager);
-        _creator = config.creator;
-        _market = config.market;
-
-        _underlyingAsset = config.underlyingAsset;
-        _token = new FragmentToken(config.userId, 888);
-
-        address[] memory proposers = new address[](1);
-        proposers[0] = config.creator;
-        address[] memory executors;
-        executors[0] = _manager.getExecutor();
-        _timelock = new TimeLock(0, proposers, executors, address(0));
-        _governance = new FragmentGovernance(config.userId, _token, _timelock);
-
-        _grantRole(DEFAULT_ADMIN_ROLE, _manager.getAdmin());
-        _setupRole(GOV_ROLE, address(_governance));
+    function initialize(DataTypes.ConfigPool memory config) public initializer {
+        // _debToken = new DebToken(_underlyingAsset);
+        _govManager = Manager(_config.manager).getGovernance();
+        // set up the configuration
+        _config = config;
     }
 
     /////////////////////////////////////////////////////
 
-    function getGovernance() external view returns (address) {
-        return address(_governance);
+    function getConfig() external view returns (DataTypes.ConfigPool memory) {
+        return _config;
     }
 
-    // EMERGENCY STOP
-    function disableCreator() external onlyRole(GOV_ROLE) {
+    // // EMERGENCY STOP
+    function disableCreator() external onlyGov {
         _isDisabled = true;
     }
 
-    // Borrow buy GOV
-    function borrow(uint256 amount) external onlyRole(GOV_ROLE) isDisabled {
+    // // Borrow buy GOV
+    function borrow(uint256 amount) external onlyGov isDisabled {
         // Only one loan at time
         if (_currentLoan.state == DataTypes.LoanState.PENDING)
             revert PreviousLoanNotEnded();
 
         DataTypes.Loan memory loan = DataTypes.Loan({
             loanId: _currentLoan.loanId > 0 ? ++_currentLoan.loanId : 1,
-            amount: amount,
             interest: _defaultInterest,
             timestamp: block.timestamp,
             state: DataTypes.LoanState.PENDING
         });
+
+        uint256 comunityFee = (amount * _defaultInterest) / 1 ether;
+        DebToken(_config.debToken).mint(_config.creator, amount + comunityFee);
 
         LendingLogic.validateBorrowRange(
             loan.loanId,
@@ -142,39 +134,39 @@ contract FragmentPool is AccessControl, Initializable {
         // It should  had enought liquidity on  the defi market
 
         LendingLogic.withdraw(
-            _market,
-            _manager.getPool(_underlyingAsset),
-            _underlyingAsset,
+            _config.market,
+            Manager(_config.manager).getPool(_config.underlyingAsset),
+            _config.underlyingAsset,
             amount
         );
         // We transfer the amount to the creator
-        IERC20(_underlyingAsset).safeTransfer(_creator, amount);
+        IERC20(_config.underlyingAsset).safeTransfer(_config.creator, amount);
 
         _currentLoan = loan;
 
-        emit Borrow(_creator, amount, _getFullBalance());
+        emit Borrow(_config.creator, amount, _getFullBalance());
     }
 
     function repay(uint256 amount) external {
         // Only one loan at time
         if (_currentLoan.state == DataTypes.LoanState.ENDED)
             revert NothingToRepay();
-        // To do more easy the calculations we repay everything all at once.
-        uint256 amountToRepay = _currentLoan.amount +
-            ((_currentLoan.amount * _currentLoan.interest) / 1 ether);
-        if (amountToRepay != amount) revert AmountNotCoverTheDebt();
-
-        IERC20(_underlyingAsset).safeTransferFrom(
+        // They need to pay everything
+        IERC20(_config.underlyingAsset).safeTransferFrom(
             msg.sender,
             address(this),
             amount
         );
+        // Burn tokens
+        DebToken(_config.debToken).burn(msg.sender, amount);
         // Deposit on the defi markets
         _rebalanceTokens();
         // Finalize the loan
-        _currentLoan.state = DataTypes.LoanState.ENDED;
+        if (DebToken(_config.debToken).balanceOf(msg.sender) == 0) {
+            _currentLoan.state = DataTypes.LoanState.ENDED;
+        }
         emit Repay(
-            _creator,
+            _config.creator,
             msg.sender,
             amount,
             _currentLoan.interest,
@@ -182,114 +174,100 @@ contract FragmentPool is AccessControl, Initializable {
         );
     }
 
-    function rebalanceTokens() external onlyRole(DEFAULT_ADMIN_ROLE) {
+    function rebalanceTokens() external onlyAdmin {
         _rebalanceTokens();
     }
 
-    function buyPrice(
-        uint256 amount
-    ) public returns (uint256, uint256, uint256) {
-        uint256 price = PriceLogic.priceBuy(
-            _token.balanceOf(address(this)),
-            amount,
-            _getFullBalance()
-        );
-        uint256 protocolFee = (price * Manager(_manager).getProtocolFee()) /
-            1 ether;
-        uint256 totalPrice = price + protocolFee;
-        return (totalPrice, protocolFee, 0);
-    }
-
-    function sellPrice(
-        uint256 amount
-    ) public returns (uint256, uint256, uint256) {
-        uint256 price = PriceLogic.priceBuy(
-            _token.balanceOf(address(this)),
-            amount,
-            _getFullBalance()
-        );
-        uint256 creatorFee = (price * Manager(_manager).getCreatorFee()) /
-            1 ether;
-        uint256 userPrice = price - creatorFee;
-        return (price, userPrice, creatorFee);
-    }
-
     function buyFragment(uint256 amount) public isDisabled {
-        uint256 currentBalance = _token.balanceOf(address(this));
-        if (currentBalance == _token.totalSupply() && msg.sender != _creator) {
+        uint256 currentBalance = FragmentToken(_config.token).balanceOf(
+            address(this)
+        );
+        if (
+            currentBalance == FragmentToken(_config.token).totalSupply() &&
+            msg.sender != _config.creator
+        ) {
             revert CreatorNeedToBuyFirst();
         }
-        (
-            uint256 totalPrice,
-            uint256 protocolFee,
-            uint256 creatorFee
-        ) = buyPrice(amount);
+
+        (uint256 totalPrice, uint256 protocolFee, ) = Pricing(_config.pricing)
+            .priceBuy(
+                FragmentToken(_config.token).balanceOf(address(this)),
+                amount,
+                _getFullBalance()
+            );
+
         // Get the amount price
-        IERC20(_underlyingAsset).safeTransferFrom(
+        IERC20(_config.underlyingAsset).safeTransferFrom(
             msg.sender,
             address(this),
             totalPrice
         );
         // Send fees to protocol
-        IERC20(_underlyingAsset).safeTransfer(
-            Manager(_manager).getTreasury(),
+        IERC20(_config.underlyingAsset).safeTransfer(
+            Manager(_config.manager).getTreasury(),
             protocolFee
         );
         // Send fragments
-        _token.mint(msg.sender, amount);
+        FragmentToken(_config.token).mint(msg.sender, amount);
         // RebalancePosition
         _rebalanceTokens();
-        unchecked {
-            _amountSelled++;
-        }
+
         emit Trade(
             msg.sender,
-            _creator,
+            _config.creator,
             true,
             1,
             totalPrice,
             protocolFee,
             0, // only on the sell
-            _amountSelled
+            FragmentToken(_config.token).totalSupply()
         );
     }
 
     function sellFragment(uint256 amount) public {
-        (uint256 totalPrice, uint256 userPrice, uint256 creatorFee) = sellPrice(
-            amount
-        );
+        (uint256 totalPrice, uint256 userPrice, uint256 creatorFee) = Pricing(
+            _config.pricing
+        ).priceSell(
+                FragmentToken(_config.token).balanceOf(address(this)),
+                amount,
+                _getFullBalance()
+            );
 
         // Send fragments to the poll
-        _token.burn(msg.sender, amount);
+        FragmentToken(_config.token).burn(msg.sender, amount);
         // Withdraw specific amount
         LendingLogic.withdraw(
-            _market,
-            _manager.getPool(_underlyingAsset),
-            _underlyingAsset,
+            _config.market,
+            Manager(_config.manager).getPool(_config.underlyingAsset),
+            _config.underlyingAsset,
             totalPrice
         );
 
         if (_isDisabled) {
             // In case the creator is disabled we don't discount the amount for the creator
-            IERC20(_underlyingAsset).safeTransfer(msg.sender, totalPrice);
+            IERC20(_config.underlyingAsset).safeTransfer(
+                msg.sender,
+                totalPrice
+            );
         } else {
             // Get the amount price for selling
-            IERC20(_underlyingAsset).safeTransfer(msg.sender, userPrice);
+            IERC20(_config.underlyingAsset).safeTransfer(msg.sender, userPrice);
             // Send fees to protocol
-            IERC20(_underlyingAsset).safeTransfer(_creator, creatorFee);
+            IERC20(_config.underlyingAsset).safeTransfer(
+                _config.creator,
+                creatorFee
+            );
         }
-        unchecked {
-            _amountSelled--;
-        }
+
         emit Trade(
             msg.sender,
-            _creator,
+            _config.creator,
             true,
             1,
             totalPrice,
             0,
-            creatorFee, // only on the sell
-            _amountSelled
+            5000, // only on the sell
+            FragmentToken(_config.token).totalSupply()
         );
     }
 
@@ -297,13 +275,15 @@ contract FragmentPool is AccessControl, Initializable {
     // PRIVATE
     ///////////////////////////////////////////////
     function _rebalanceTokens() internal {
-        if (_market != DataTypes.Markets.NONE) {
-            uint256 amount = IERC20(_underlyingAsset).balanceOf(address(this));
+        if (_config.market != DataTypes.Markets.NONE) {
+            uint256 amount = IERC20(_config.underlyingAsset).balanceOf(
+                address(this)
+            );
             if (amount > 0) {
                 LendingLogic.deposit(
-                    _market,
-                    _manager.getPool(_underlyingAsset),
-                    _underlyingAsset,
+                    _config.market,
+                    Manager(_config.manager).getPool(_config.underlyingAsset),
+                    _config.underlyingAsset,
                     amount
                 );
             }
@@ -313,14 +293,10 @@ contract FragmentPool is AccessControl, Initializable {
     // Raw + Aave + Compound
     function _getFullBalance() internal view returns (uint256) {
         return
-            IERC20(_underlyingAsset).balanceOf(address(this)) +
-            AaveLogic.balanceOf(
-                _manager.getAToken(_underlyingAsset),
-                address(this)
-            ) +
-            CompoundLogic.balanceOf(
-                _manager.getCAsset(_underlyingAsset),
-                address(this)
+            Pricing(_config.pricing).getFullBalance(
+                _config.manager,
+                address(this),
+                _config.underlyingAsset
             );
     }
 }

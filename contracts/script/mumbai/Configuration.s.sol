@@ -4,8 +4,8 @@ pragma solidity ^0.8.19;
 import "forge-std/Script.sol";
 import "../helpers/DeployerHelper.sol";
 import "../../src/libs/configs/Manager.sol";
-
 import "../../src/libs/utils/DataTypes.sol";
+import "../../src/libs/configs/Pricing.sol";
 
 contract DeployConfigurationScript is DeployerHelper {
     address immutable TREASURY = 0x2adB75AB75957Cb1A13c23191E153aF167fe7f73;
@@ -23,7 +23,7 @@ contract DeployConfigurationScript is DeployerHelper {
 
     function run() external broadcast {
         Addresses memory addresses = _decodeJson();
-
+        Pricing pricing = new Pricing();
         Manager manager = new Manager(msg.sender, TREASURY, msg.sender);
         manager.setLens(LENS);
 
@@ -31,7 +31,7 @@ contract DeployConfigurationScript is DeployerHelper {
         manager.setAAsset(WETH, AWETH);
 
         manager.setCAsset(USDC, CUSDC);
-
+        manager.setPricing(address(pricing));
         // SETTING MARKET
 
         manager.setMarket(WETH, DataTypes.Markets.AAVE);

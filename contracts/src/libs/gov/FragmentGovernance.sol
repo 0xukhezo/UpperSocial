@@ -19,7 +19,7 @@ contract FragmentGovernance is
         IVotes token,
         TimelockController timelock
     )
-        Governor(string(abi.encodePacked("Gov", userId)))
+        Governor("PersonalGov")
         GovernorVotes(token)
         GovernorVotesQuorumFraction(4)
         GovernorTimelockControl(timelock)
