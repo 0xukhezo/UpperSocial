@@ -76,7 +76,7 @@ export default function Profile({
                     : { backgroundImage: `url('${Cover.src}')` }
                 }
               >
-                <div className=" ml-[32px] pt-[181px] flex">
+                <div className=" ml-[32px] pt-[200px] flex">
                   {profile?.picture && "original" in profile?.picture ? (
                     <img
                       height={158}
@@ -89,8 +89,8 @@ export default function Profile({
                     />
                   ) : (
                     <img
-                      height={158}
-                      width={158}
+                      height={180}
+                      width={180}
                       src={`data:image/png;base64,${new Identicon(
                         profile.ownedBy,
                         64
@@ -177,7 +177,7 @@ export default function Profile({
                 </div>
               </div>
             }
-            <div className="mt-[124px] px-[12px] text-gray-500">
+            <div className="mt-[154px] px-[12px] text-gray-500">
               {profile?.bio}
             </div>
             <ProfileMarketplace />
