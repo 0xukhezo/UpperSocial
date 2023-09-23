@@ -29,7 +29,9 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
+    "react-qr-code": "^2.0.12",
     "readable-web-to-node-stream": "^3.0.2",
+    "socket.io-client": "^4.7.2",
     "typescript": "5.2.2",
     "viem": "^1.0.0",
     "wagmi": "^1.1.0"
