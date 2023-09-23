@@ -12,7 +12,7 @@ contract DeployConfigurationScript is DeployerHelper {
     // AAVE
     address immutable AAVE = 0xcC6114B983E4Ed2737E9BD3961c9924e6216c704;
     address immutable WETH = 0xc199807AF4fEDB02EE567Ed0FeB814A077de4802;
-    address immutable AWETH = address(0);
+    address immutable AWETH = 0xAba444af64ad33A6d8575b8A353226997d6A126a;
 
     // COMPOUND
     address immutable USDC = 0xDB3cB4f2688daAB3BFf59C24cC42D4B6285828e9;
