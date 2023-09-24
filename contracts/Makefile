@@ -21,5 +21,5 @@ deploy-mum-config :; forge script script/mumbai/Configuration.s.sol:DeployConfig
 deploy-mum-set-config :; forge script script/mumbai/SetConfig.s.sol:DeploySetConfigScript --fork-url ${RPC_MUMBAI} --broadcast --private-key ${PRIVATE_KEY} --legacy --verify --etherscan-api-key ${ETHERSCAN_API_KEY_MUMBAI}  -vvvv 
 
 deploy-mum-protocol :; forge script script/mumbai/Protocol.s.sol:DeployProtocolScript --fork-url ${RPC_MUMBAI} --broadcast --private-key ${PRIVATE_KEY} --legacy --slow --verify --etherscan-api-key ${ETHERSCAN_API_KEY_MUMBAI}  -vvvv
-deploy-mum-governance :; forge script script/mumbai/Governance.s.sol:DeployGovernanceScript --fork-url ${RPC_MUMBAI} --broadcast --private-key ${PRIVATE_KEY} --legacy  --verify --etherscan-api-key ${ETHERSCAN_API_KEY_MUMBAI}  -vvvv
+deploy-mum-governance :; forge script script/mumbai/Governance.s.sol:DeployGovernanceScript --fork-url ${RPC_MUMBAI} --broadcast --private-key ${PRIVATE_KEY} --legacy --optimize true --optimizer-runs 10000000 --verify --etherscan-api-key ${ETHERSCAN_API_KEY_MUMBAI}  -vvvv
 deploy-mum-fauceteer :; forge script script/mumbai/FaucetCOMP.s.sol:DeployFauceteerScript --fork-url ${RPC_MUMBAI} --broadcast --private-key ${PRIVATE_KEY} --legacy --slow --verify --etherscan-api-key ${ETHERSCAN_API_KEY_MUMBAI}  -vvvv

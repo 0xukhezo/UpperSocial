@@ -42,6 +42,7 @@ contract Governance {
         address pool = CreatorFactory(_factory).getPool(msg.sender);
         if (pool == address(0)) revert UserNotExist();
         DataTypes.ConfigPool memory config = FragmentPool(pool).getConfig();
+
         _governances[msg.sender] = address(
             new FragmentGovernance(
                 config.userId,
@@ -51,7 +52,7 @@ contract Governance {
         );
     }
 
-    function createTimeLock(address user) internal {
+    function createTimeLock(address user) external {
         address pool = CreatorFactory(_factory).getPool(msg.sender);
         if (pool == address(0)) revert UserNotExist();
 
