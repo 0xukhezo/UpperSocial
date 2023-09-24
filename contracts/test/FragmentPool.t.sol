@@ -99,7 +99,7 @@ contract FragmentPoolTest is Test {
         vm.startPrank(test_user);
         uint256 buyPrice = FragmentPool(instance).getBuyPrice(1);
 
-        console.log("INIT Buy Price", buyPrice);
+        console.log("1 ----------------------- INIT Buy Price", buyPrice);
         _token.approve(instance, buyPrice);
         FragmentPool(instance).buyFragment(1); // First fragment creator
         console.log("FRAGMENT", config.token);
@@ -110,11 +110,22 @@ contract FragmentPoolTest is Test {
         vm.startPrank(_user);
         uint256 buyPrice2 = FragmentPool(instance).getBuyPrice(2);
 
-        console.log("INIT Buy Price", buyPrice2);
+        console.log("2 ----------------------- INIT Buy Price", buyPrice2);
         _token.approve(instance, buyPrice2);
         FragmentPool(instance).buyFragment(2); // First fragment creator
         console.log("FRAGMENT", config.token);
         assertEq(IERC20(config.token).balanceOf(_user), 2);
+
+        vm.stopPrank();
+
+        vm.startPrank(_user);
+        uint256 buyPrice3 = FragmentPool(instance).getBuyPrice(2);
+
+        console.log("3 ----------------------- INIT Buy Price", buyPrice3);
+        _token.approve(instance, buyPrice3);
+        FragmentPool(instance).buyFragment(2); // First fragment creator
+        console.log("FRAGMENT", config.token);
+        assertEq(IERC20(config.token).balanceOf(_user), 4);
 
         vm.stopPrank();
 

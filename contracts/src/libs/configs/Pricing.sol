@@ -11,9 +11,9 @@ import {TimeLock} from "../gov/TimeLock.sol";
 import {FragmentToken} from "../tokens/FragmentToken.sol";
 
 contract Pricing {
-    uint256 constant K = 180;
+    uint256 constant K = 160;
     uint256 constant FEE = 5000;
-    uint256 constant INIT_PRICE = 1 ether;
+    uint256 constant INIT_PRICE = 0.001 ether;
 
     function priceBuy(
         uint256 currentFragment,
@@ -32,7 +32,7 @@ contract Pricing {
             }
         }
 
-        uint256 protocolFee = (price * 5000) / 1 ether;
+        uint256 protocolFee = (price * FEE) / 1 ether;
         uint256 totalPrice = price + protocolFee;
 
         return (totalPrice, protocolFee, 0);
@@ -54,7 +54,7 @@ contract Pricing {
             }
         }
 
-        uint256 creatorFee = (price * 5000) / 1 ether;
+        uint256 creatorFee = (price * FEE) / 1 ether;
         uint256 userPrice = price - creatorFee;
         return (price, userPrice, creatorFee);
     }

@@ -18,5 +18,7 @@ git-diff :
 # Deploys
 deploy-mum-ape :; forge script script/mumbai/ApeCoin.s.sol:DeployApeCoinScript --fork-url ${RPC_MUMBAI} --broadcast --private-key ${PRIVATE_KEY} --legacy --verify --etherscan-api-key ${ETHERSCAN_API_KEY_MUMBAI}  -vvvv
 deploy-mum-config :; forge script script/mumbai/Configuration.s.sol:DeployConfigurationScript --fork-url ${RPC_MUMBAI} --broadcast --private-key ${PRIVATE_KEY} --legacy --verify --etherscan-api-key ${ETHERSCAN_API_KEY_MUMBAI}  -vvvv 
+deploy-mum-set-config :; forge script script/mumbai/SetConfig.s.sol:DeploySetConfigScript --fork-url ${RPC_MUMBAI} --broadcast --private-key ${PRIVATE_KEY} --legacy --verify --etherscan-api-key ${ETHERSCAN_API_KEY_MUMBAI}  -vvvv 
+
 deploy-mum-protocol :; forge script script/mumbai/Protocol.s.sol:DeployProtocolScript --fork-url ${RPC_MUMBAI} --broadcast --private-key ${PRIVATE_KEY} --legacy --slow --verify --etherscan-api-key ${ETHERSCAN_API_KEY_MUMBAI}  -vvvv
 deploy-mum-governance :; forge script script/mumbai/Governance.s.sol:DeployGovernanceScript --fork-url ${RPC_MUMBAI} --broadcast --private-key ${PRIVATE_KEY} --legacy --gas-estimate-multiplier 888888 --verify --etherscan-api-key ${ETHERSCAN_API_KEY_MUMBAI}  -vvvv

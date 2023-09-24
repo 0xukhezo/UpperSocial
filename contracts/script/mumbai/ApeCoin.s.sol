@@ -10,11 +10,7 @@ contract DeployApeCoinScript is DeployerHelper {
 
     function run() external broadcast {
         Addresses memory addresses = _decodeJson();
-        if (addresses.apeCoin == address(0)) {
-            coin = new ApeCoin("APECoin", "PoS");
-        } else {
-            coin = ApeCoin(addresses.apeCoin);
-        }
+        coin = new ApeCoin("APECoin", "PoS");
 
         addresses.apeCoin = address(coin);
 

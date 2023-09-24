@@ -6,9 +6,9 @@ dataSources:
     name: CreatorFactory
     network: mumbai
     source:
-      address: "0x4edc5efEe48587ef763Cb34756F023aC2A31F6e5"
+      address: "0x80a8303f5bf24944eEfB80003fA593a471b762b1"
       abi: CreatorFactory
-      startBlock: 40430000
+      startBlock: 40449472
 
     mapping:
       kind: ethereum/events

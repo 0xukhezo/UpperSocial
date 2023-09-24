@@ -1,7 +1,7 @@
 {
-  "apeCoin": "0xaBf610082032C7Dc784ed9534CC3b474BefDfd60",
-  "creatorFactory": "0x4edc5efEe48587ef763Cb34756F023aC2A31F6e5",
+  "apeCoin": "0x413E5cb716aD3994e5294FA6B74DD3B8A4083497",
+  "creatorFactory": "0x80a8303f5bf24944eEfB80003fA593a471b762b1",
   "deployer": "0xc1ca7147d0b370e02D79811A0110dD85e9D5834c",
-  "governance": "0x2f0bec2281f71bED5bd891c4fd2CB99adF9be6f9",
-  "manager": "0x2f0bec2281f71bED5bd891c4fd2CB99adF9be6f9"
+  "governance": "0x014F9a29eEba80F666125293a630930bcC72b61a",
+  "manager": "0x014F9a29eEba80F666125293a630930bcC72b61a"
 }
