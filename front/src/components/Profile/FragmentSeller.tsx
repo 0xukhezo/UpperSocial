@@ -187,7 +187,7 @@ export default function FragmentSeller({
             <span>Fragments</span>
           </div>
 
-          {buyPrice ? (
+          {buyPrice && !isSelling ? (
             <div className="flex flex-col gap-y-[12px]">
               <div className="grid grid-cols-2">
                 <div className="flex items-center">
