@@ -28,7 +28,7 @@ yarn-error.log*
 .env
 
 # abis
-.abis
+/abis
 
 # vercel
 .vercel

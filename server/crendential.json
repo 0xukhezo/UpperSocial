@@ -1,0 +1,23 @@
+{
+  "@context": [
+    {
+      "@protected": true,
+      "@version": 1.1,
+      "id": "@id",
+      "type": "@type",
+      "Whitelist": {
+        "@context": {
+          "@propagate": true,
+          "@protected": true,
+          "polygon-vocab": "urn:uuid:a5804a98-9941-4cd7-b276-1784832acccf#",
+          "xsd": "http://www.w3.org/2001/XMLSchema#",
+          "whitelisted": {
+            "@id": "polygon-vocab:whitelisted",
+            "@type": "xsd:boolean"
+          }
+        },
+        "@id": "urn:uuid:56510dbd-5be3-45aa-a6fc-4df68802960c"
+      }
+    }
+  ]
+}

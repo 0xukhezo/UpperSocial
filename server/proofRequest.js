@@ -1,4 +1,4 @@
-const { KYCAgeCredential } = require("./vcHelpers/KYCAgeCredential");
+const { LensProfileCredential } = require("./vcHelpers/LensProfileCredential");
 
 // design your own customised authentication requirement here using Query Language
 // https://0xpolygonid.github.io/tutorials/verifier/verification-library/zk-query-language/
@@ -13,7 +13,7 @@ const credentialSubject = {
   },
 };
 
-const proofRequest = KYCAgeCredential(credentialSubject);
+const proofRequest = LensProfileCredential();
 
 module.exports = {
   humanReadableAuthReason,

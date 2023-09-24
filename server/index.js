@@ -136,7 +136,7 @@ async function handleVerification(req, res) {
 
   try {
     const opts = {
-      AcceptedStateTransitionDelay: 5 * 60 * 1000, // up to a 5 minute delay accepted by the Verifier
+      AcceptedStateTransitionDelay: 60 * 500, // up to a 5 minute delay accepted by the Verifier
     };
     authResponse = await verifier.fullVerify(tokenStr, authRequest, opts);
     const userId = authResponse.from;
