@@ -1,7 +1,7 @@
 // Utils
 import { formatNumber } from "@/utils/formatNumber";
 // React
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // Next
 import Image from "next/image";
 // Heroicons
@@ -15,13 +15,16 @@ import {
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
+  useContractRead,
 } from "wagmi";
+
+import { ethers } from "ethers";
 
 interface FragmentSellerProps {
   name: string;
   poolAddress: string;
-  fragmentTokenAddress?: string;
-  tokenAddress?: string;
+  fragmentTokenAddress: string;
+  tokenAddress: string;
 }
 
 export default function FragmentSeller({
@@ -30,21 +33,29 @@ export default function FragmentSeller({
   fragmentTokenAddress,
   tokenAddress,
 }: FragmentSellerProps) {
-  const [fragmentsAmount, setFragmentsAmount] = useState<number>(0);
+  const [fragmentsAmount, setFragmentsAmount] = useState<number>(1);
+  const [amountToApprove, setAmountToApprove] = useState<number>(1);
   const [isSelling, setIsSelling] = useState<boolean>(false);
+
+  const { data: buyPrice } = useContractRead({
+    address: poolAddress as `0x${string}`,
+    abi: abi.abiFragmentPool,
+    functionName: "getBuyPrice",
+    args: [fragmentsAmount],
+  });
 
   const { config: buyFragmentContractConfig } = usePrepareContractWrite({
     address: poolAddress as `0x${string}`,
     abi: abi.abiFragmentPool,
-    functionName: "buyShares",
-    args: [poolAddress, fragmentsAmount],
+    functionName: "buyFragment",
+    args: [fragmentsAmount],
   });
 
   const { config: sellFragmentContractConfig } = usePrepareContractWrite({
     address: poolAddress as `0x${string}`,
     abi: abi.abiFragmentPool,
-    functionName: "sellShares",
-    args: [poolAddress, fragmentsAmount],
+    functionName: "sellFragment",
+    args: [fragmentsAmount],
   });
 
   const { config: approveContractConfig } = usePrepareContractWrite({
@@ -53,7 +64,7 @@ export default function FragmentSeller({
       : (tokenAddress as `0x${string}`),
     abi: abi.abiERC20,
     functionName: "approve",
-    args: [poolAddress, fragmentsAmount],
+    args: [poolAddress, amountToApprove],
   });
 
   const { writeAsync: approveContractTx, data: dataApprove } = useContractWrite(
@@ -109,6 +120,16 @@ export default function FragmentSeller({
     setFragmentsAmount(Number(val));
   };
 
+  useEffect(() => {
+    if (isSelling) {
+      console.log(Number(fragmentsAmount));
+      setAmountToApprove(Number(fragmentsAmount));
+    } else {
+      console.log(Number(buyPrice));
+      setAmountToApprove(Number(buyPrice));
+    }
+  }, [amountToApprove]);
+
   return (
     <div className="flex flex-col ml-[24px] mt-[16px]">
       <div className="shadow-xl max-w-[448px] px-[20px] py-[24px] rounded-lg">
@@ -157,76 +178,102 @@ export default function FragmentSeller({
                   { passive: false }
                 )
               }
-              step="any"
+              step={1}
               type="number"
               name="fragmentsAmount"
               id="fragmentsAmount"
-              className="outline-white bg-gray-100"
+              className="outline-gray-100 bg-gray-100"
             />
             <span>Fragments</span>
           </div>
 
-          <div className="flex flex-col gap-y-[12px]">
-            <div className="grid grid-cols-2">
-              <div className="flex items-center">
-                <span className="text-gray-500 text-sm font-base">
-                  Total cost
-                </span>{" "}
-                <InformationCircleIcon
-                  width={16}
-                  height={16}
-                  aria-hidden="true"
-                  className="text-gray-500 ml-2"
-                />
+          {buyPrice && (
+            <div className="flex flex-col gap-y-[12px]">
+              <div className="grid grid-cols-2">
+                <div className="flex items-center">
+                  <span className="text-gray-500 text-sm font-base">
+                    Total cost
+                  </span>{" "}
+                  <InformationCircleIcon
+                    width={16}
+                    height={16}
+                    aria-hidden="true"
+                    className="text-gray-500 ml-2"
+                  />
+                </div>
+                <div className="flex items-center justify-end">
+                  <span className="text-gray-500 text-sm font-base">
+                    ≈ $
+                    {formatNumber(
+                      Number(
+                        (
+                          Number(ethers.utils.formatEther(buyPrice as string)) *
+                          0.52
+                        ).toFixed(3)
+                      )
+                    )}
+                  </span>
+                  <span className="text-gray-900 text-lg font-semibold ml-1">
+                    {formatNumber(
+                      Number(ethers.utils.formatEther(buyPrice as string))
+                    )}{" "}
+                    MATIC
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center justify-end">
-                <span className="text-gray-500 text-sm font-base">
-                  ≈ ${formatNumber(200.43)}
-                </span>
-                <span className="text-gray-900 text-lg font-semibold ml-1">
-                  {formatNumber(200)} MATIC
-                </span>
+              <div className="grid grid-cols-2">
+                <div className="flex items-center">
+                  <span className="text-gray-500 text-sm font-base">Fee</span>{" "}
+                  <InformationCircleIcon
+                    width={16}
+                    height={16}
+                    aria-hidden="true"
+                    className="text-gray-500 ml-2"
+                  />
+                </div>
+                <div className="flex items-center justify-end">
+                  <span className="text-gray-500 text-sm font-base">
+                    ≈ $
+                    {formatNumber(
+                      Number(
+                        (
+                          Number(ethers.utils.formatEther(buyPrice as string)) *
+                          0.05 *
+                          0.52
+                        ).toFixed(3)
+                      )
+                    )}
+                  </span>
+                  <span className="text-gray-900 text-lg font-semibold ml-1">
+                    {formatNumber(
+                      Number(ethers.utils.formatEther(buyPrice as string)) *
+                        0.05
+                    )}{" "}
+                    MATIC
+                  </span>
+                </div>
+              </div>
+              <div className="grid grid-cols-2">
+                <div className="flex items-center">
+                  <span className="text-gray-500 text-sm font-base">Gas</span>{" "}
+                  <InformationCircleIcon
+                    width={16}
+                    height={16}
+                    aria-hidden="true"
+                    className="text-gray-500 ml-2"
+                  />
+                </div>
+                <div className="flex items-center justify-end">
+                  <span className="text-gray-500 text-sm font-base">
+                    ≈ ${formatNumber(0.23)}
+                  </span>
+                  <span className="text-gray-900 text-lg font-semibold ml-1">
+                    {formatNumber(0.3)} MATIC
+                  </span>
+                </div>
               </div>
             </div>
-            <div className="grid grid-cols-2">
-              <div className="flex items-center">
-                <span className="text-gray-500 text-sm font-base">Fee</span>{" "}
-                <InformationCircleIcon
-                  width={16}
-                  height={16}
-                  aria-hidden="true"
-                  className="text-gray-500 ml-2"
-                />
-              </div>
-              <div className="flex items-center justify-end">
-                <span className="text-gray-500 text-sm font-base">
-                  ≈ ${formatNumber(2.43)}
-                </span>
-                <span className="text-gray-900 text-lg font-semibold ml-1">
-                  {formatNumber(20)} MATIC
-                </span>
-              </div>
-            </div>
-            <div className="grid grid-cols-2">
-              <div className="flex items-center">
-                <span className="text-gray-500 text-sm font-base">Gas</span>{" "}
-                <InformationCircleIcon
-                  width={16}
-                  height={16}
-                  aria-hidden="true"
-                  className="text-gray-500 ml-2"
-                />
-              </div>
-              <div className="flex items-center justify-end">
-                <span className="text-gray-500 text-sm font-base">
-                  ≈ ${formatNumber(0.23)}
-                </span>
-                <span className="text-gray-900 text-lg font-semibold ml-1">
-                  {formatNumber(0.3)} MATIC
-                </span>
-              </div>
-            </div>
-          </div>
+          )}
           <button
             className="bg-indigo-700 rounded-lg font-medium text-white tracking-wide text-sm w-full py-[9px] mt-[20px] flex items-center justify-center"
             onClick={() => {
@@ -245,7 +292,13 @@ export default function FragmentSeller({
             />
             <span>
               {txSuccessApprove ? (
-                <div>Up {name}</div>
+                <div>
+                  {!isSelling ? (
+                    <div>Up {name}</div>
+                  ) : (
+                    <div>Sell Fragments</div>
+                  )}
+                </div>
               ) : (
                 <div>Approve {isSelling ? "Fragments" : "ERC20"}</div>
               )}

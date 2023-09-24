@@ -5,7 +5,7 @@ import React, { useState } from "react";
 // Next
 import Image from "next/image";
 // Images
-import Heart from "../../../public/Heart.svg";
+import UpperCoin from "../../../public/UpperCoin.svg";
 // Components
 import WorldCoinButton from "../Buttons/WorldCoinButton";
 
@@ -31,7 +31,7 @@ export default function VoteCard() {
             width={22}
             height={22}
             alt="Coin Image"
-            src={Heart.src}
+            src={UpperCoin.src}
             className="mr-[8px]"
           />
           <span className="text-gray-500 text-sm font-medium">

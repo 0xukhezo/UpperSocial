@@ -128,15 +128,16 @@ export default function PolygonIDVerifier({
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                 <div className="sm:flex sm:items-start w-full ">
                   <div className="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                    <div>
+                    <div className="flex flex-col text-center mx-auto">
                       {qrCodeData && (
                         <div>
-                          <div>
+                          <div className="text-gray-900 text-lg">
                             Scan this QR code from your{" "}
                             <a
                               href={linkDownloadPolygonIDWalletApp}
                               target="_blank"
                               rel="noreferrer"
+                              className="text-indigo-500"
                             >
                               Polygon ID Wallet App
                             </a>{" "}
@@ -153,24 +154,10 @@ export default function PolygonIDVerifier({
                             {qrCodeData &&
                               !isHandlingVerification &&
                               !verificationCheckComplete && (
-                                <div>
+                                <div className="flex justify-center mt-10">
                                   <QRCode value={JSON.stringify(qrCodeData)} />
                                 </div>
                               )}
-
-                            {qrCodeData.body?.scope[0].query && (
-                              <p>
-                                Type: {qrCodeData.body?.scope[0].query.type}
-                              </p>
-                            )}
-
-                            {qrCodeData.body.message && (
-                              <p>{qrCodeData.body.message}</p>
-                            )}
-
-                            {qrCodeData.body.reason && (
-                              <p>Reason: {qrCodeData.body.reason}</p>
-                            )}
                           </div>
                         </div>
                       )}
