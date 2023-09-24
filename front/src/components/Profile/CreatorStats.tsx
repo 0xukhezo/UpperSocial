@@ -12,9 +12,13 @@ import { ArrowSmallUpIcon } from "@heroicons/react/24/outline";
 // Wagmi
 import { useContractRead } from "wagmi";
 
-export default function CreatorStats() {
-  const fragmentPoolAddress = process.env.NEXT_PUBLIC_FRAGMENT_POOL;
+interface CreatorStatsProps {
+  fragmentPoolAddress: string;
+}
 
+export default function CreatorStats({
+  fragmentPoolAddress,
+}: CreatorStatsProps) {
   const { data: balance } = useContractRead({
     address: fragmentPoolAddress as `0x${string}`,
     abi: abi.abiFragmentPool,

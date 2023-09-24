@@ -20,17 +20,18 @@ import {
 interface FragmentSellerProps {
   name: string;
   poolAddress: string;
+  fragmentTokenAddress?: string;
+  tokenAddress?: string;
 }
 
 export default function FragmentSeller({
   name,
   poolAddress,
+  fragmentTokenAddress,
+  tokenAddress,
 }: FragmentSellerProps) {
   const [fragmentsAmount, setFragmentsAmount] = useState<number>(0);
   const [isSelling, setIsSelling] = useState<boolean>(false);
-
-  const tokenAddress = process.env.NEXT_PUBLIC_TOKEN_ADDRESS;
-  const fragmentTokenAddress = process.env.NEXT_PUBLIC_FRAGMENT_ADDRESS;
 
   const { config: buyFragmentContractConfig } = usePrepareContractWrite({
     address: poolAddress as `0x${string}`,

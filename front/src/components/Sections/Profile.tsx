@@ -255,7 +255,7 @@ export default function Profile({
             </div>
           </section>
           <section className="overflow-auto h-full">
-            <CreatorStats />
+            <CreatorStats fragmentPoolAddress={fragmentPoolAddress} />
             {profile?.name ? (
               <FragmentSeller name={profile?.name} poolAddress={poolAddress} />
             ) : (

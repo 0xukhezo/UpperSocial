@@ -74,7 +74,7 @@ export default function TokensModal({
 
   const tokens = [
     {
-      address: "0x01",
+      address: "0xaBf610082032C7Dc784ed9534CC3b474BefDfd60",
       imagen: ApeCoin.src,
       symbol: "APE Coin",
       community: "162",
