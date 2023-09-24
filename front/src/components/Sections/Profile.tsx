@@ -25,6 +25,8 @@ import { useEffect, useState } from "react";
 import { PencilIcon, ChevronDoubleUpIcon } from "@heroicons/react/24/outline";
 // Utils
 import { formatNumber } from "@/utils/formatNumber";
+// Graph
+import { client, Pools } from "../../pages/api/Pools";
 
 interface ProfileProps {
   handle: string | string[] | undefined;
@@ -54,6 +56,32 @@ export default function Profile({
     });
     setFeed(publicationsPost);
   }, [publications]);
+
+  async function fetchPool(daoName: string) {
+    // fragmentPools(where: {owner: profile?.ownedBy}) {
+    const queryBody = `query {
+        fragmentPools(where: {owner: "0xF70c1cEa8909563619547128A92dd7CC965F9657"}) {
+          id
+          userId
+          underlyingAsset
+          transactionHash
+          supply
+          market
+          instance
+        }
+      }`;
+
+    try {
+      let response = await client.query({ query: Pools(queryBody) });
+      console.log(response);
+      // setTimelockAddress(response.data.daos[0].timelock.id);
+      // setGovernorAddress(response.data.daos[0].gov.id);
+      // setTokenAddress(response.data.daos[0].token.id);
+      // setDao(response.data.daos[0]);
+    } catch (err) {
+      console.log({ err });
+    }
+  }
 
   const poolAddress = "0x00";
   const mockFeed = [
@@ -255,7 +283,7 @@ export default function Profile({
             </div>
           </section>
           <section className="overflow-auto h-full">
-            <CreatorStats />
+            <CreatorStats fragmentPoolAddress={poolAddress} />
             {profile?.name ? (
               <FragmentSeller name={profile?.name} poolAddress={poolAddress} />
             ) : (
@@ -392,7 +420,7 @@ export default function Profile({
             </div>
           </section>
           <section className="overflow-auto h-full">
-            <CreatorStats />
+            <CreatorStats fragmentPoolAddress={poolAddress} />
             <FragmentSeller name={"Creator"} poolAddress={poolAddress} />
             {isMyProfile && (
               <CreatorCard
