@@ -4,13 +4,15 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "auth": "env-cmd graph auth --studio $KEY_STUDIO",
+    "auth": "env-cmd --file ./.env npm run auth::cmd ",
+    "auth::cmd": "graph auth --studio $KEY_STUDIO",
     "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ uppersocial",
     "test": "graph test"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.51.1",
-    "@graphprotocol/graph-ts": "0.30.0"
+    "@graphprotocol/graph-ts": "0.30.0",
+    "env-cmd": "^10.1.0"
   },
   "devDependencies": {
     "matchstick-as": "0.5.0"
