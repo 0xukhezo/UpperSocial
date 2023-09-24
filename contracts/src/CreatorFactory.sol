@@ -74,8 +74,8 @@ contract CreatorFactory {
 
         uint256 userId = _userCounter;
 
-        address token = address(new FragmentToken(userId, 888));
-        address debToken = address(new DebToken(underlyingAsset));
+        FragmentToken token = new FragmentToken(userId, 888);
+        DebToken debToken = new DebToken(underlyingAsset);
         address pricing = Manager(_manager).getPricing();
 
         // Create contract upgradeable
@@ -89,8 +89,8 @@ contract CreatorFactory {
                 manager: address(_manager),
                 market: market,
                 pricing: pricing,
-                token: token,
-                debToken: debToken,
+                token: address(token),
+                debToken: address(debToken),
                 factory: address(this)
             })
         );
@@ -100,6 +100,9 @@ contract CreatorFactory {
             Manager(_manager).getAdmin(),
             data
         );
+        // Not the best way
+        token.transferOwnership(address(proxy));
+        debToken.transferOwnership(address(proxy));
 
         _pools[msg.sender] = address(proxy);
         // Increment counter
@@ -114,7 +117,7 @@ contract CreatorFactory {
             userId,
             underlyingAsset,
             uint(market),
-            token
+            address(token)
         );
     }
 }

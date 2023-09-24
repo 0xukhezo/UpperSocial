@@ -13,6 +13,7 @@ import {FragmentToken} from "../tokens/FragmentToken.sol";
 contract Pricing {
     uint256 constant K = 180;
     uint256 constant FEE = 5000;
+    uint256 constant INIT_PRICE = 1 ether;
 
     function priceBuy(
         uint256 currentFragment,
@@ -20,7 +21,7 @@ contract Pricing {
         uint256 currentSupply
     ) external pure returns (uint256, uint256, uint256) {
         uint256 price = 0;
-
+        if (currentFragment == 0) return (INIT_PRICE, 0, 0);
         for (uint256 i = 0; i < amount; ) {
             uint256 newBalance = currentFragment + i;
             uint priceFragment = currentSupply + price / currentFragment + i;
@@ -33,6 +34,7 @@ contract Pricing {
 
         uint256 protocolFee = (price * 5000) / 1 ether;
         uint256 totalPrice = price + protocolFee;
+
         return (totalPrice, protocolFee, 0);
     }
 

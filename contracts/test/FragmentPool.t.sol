@@ -53,7 +53,7 @@ contract FragmentPoolTest is Test {
         );
         _token.mintToAddress(
             1000000000000000000000000000000000000000000000000000000,
-            _userTwo
+            test_user
         );
         vm.startPrank(_admin);
         console.log("admin", _admin);
@@ -78,9 +78,46 @@ contract FragmentPoolTest is Test {
         vm.stopPrank();
     }
 
-    function test_create_pool() public {
+    function create_pool() public {
         vm.startPrank(test_user);
         _factory.createPool(address(_token), 0x91f3);
+
         vm.stopPrank();
+    }
+
+    function test_buy_fragment() public {
+        vm.recordLogs();
+        create_pool();
+
+        Vm.Log[] memory entries = vm.getRecordedLogs();
+        address instance = address(
+            uint160(uint256(entries[entries.length - 1].topics[2]))
+        );
+
+        DataTypes.ConfigPool memory config = FragmentPool(instance).getConfig();
+
+        vm.startPrank(test_user);
+        uint256 buyPrice = FragmentPool(instance).getBuyPrice(1);
+
+        console.log("INIT Buy Price", buyPrice);
+        _token.approve(instance, buyPrice);
+        FragmentPool(instance).buyFragment(1); // First fragment creator
+        console.log("FRAGMENT", config.token);
+        assertEq(IERC20(config.token).balanceOf(test_user), 1);
+
+        vm.stopPrank();
+
+        vm.startPrank(_user);
+        uint256 buyPrice2 = FragmentPool(instance).getBuyPrice(2);
+
+        console.log("INIT Buy Price", buyPrice2);
+        _token.approve(instance, buyPrice2);
+        FragmentPool(instance).buyFragment(2); // First fragment creator
+        console.log("FRAGMENT", config.token);
+        assertEq(IERC20(config.token).balanceOf(_user), 2);
+
+        vm.stopPrank();
+
+        console.log("BALANCE: ", IERC20(config.token).totalSupply());
     }
 }

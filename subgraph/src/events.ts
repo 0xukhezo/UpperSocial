@@ -10,12 +10,13 @@ export function handleFragmentPool(event: NewFragmentPoolEvent): void {
   entity.userId = event.params.userId;
   entity.underlyingAsset = event.params.underlyingAsset;
   entity.market = event.params.market;
+  entity.fragmentToken = event.params.fragmentToken;
   entity.blockNumber = event.block.number;
   entity.blockTimestamp = event.block.timestamp;
   entity.transactionHash = event.transaction.hash;
-  FragmentPoolTemplate.create(event.params.instance);
 
   entity.save();
+  FragmentPoolTemplate.create(event.params.instance);
 }
 
 export function handleTrade(event: TradeEvent): void {

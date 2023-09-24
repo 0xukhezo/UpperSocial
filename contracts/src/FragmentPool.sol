@@ -179,20 +179,27 @@ contract FragmentPool is Initializable {
         _rebalanceTokens();
     }
 
-    function buyFragment(uint256 amount) public isDisabled {
-        uint256 currentBalance = FragmentToken(_config.token).balanceOf(
-            address(this)
+    function getBuyPrice(uint256 amount) external view returns (uint256) {
+        (uint256 totalPrice, , ) = Pricing(_config.pricing).priceBuy(
+            FragmentToken(_config.token).totalSupply(),
+            amount,
+            _getFullBalance()
         );
-        if (
-            currentBalance == FragmentToken(_config.token).totalSupply() &&
-            msg.sender != _config.creator
-        ) {
-            revert CreatorNeedToBuyFirst();
-        }
+
+        return totalPrice;
+    }
+
+    function buyFragment(uint256 amount) public isDisabled {
+        // if (
+        //     0 == FragmentToken(_config.token).totalSupply() &&
+        //     msg.sender != _config.creator
+        // ) {
+        //     revert CreatorNeedToBuyFirst();
+        // }
 
         (uint256 totalPrice, uint256 protocolFee, ) = Pricing(_config.pricing)
             .priceBuy(
-                FragmentToken(_config.token).balanceOf(address(this)),
+                FragmentToken(_config.token).totalSupply(),
                 amount,
                 _getFullBalance()
             );
@@ -203,11 +210,14 @@ contract FragmentPool is Initializable {
             address(this),
             totalPrice
         );
-        // Send fees to protocol
-        IERC20(_config.underlyingAsset).safeTransfer(
-            Manager(_config.manager).getTreasury(),
-            protocolFee
-        );
+
+        if (protocolFee > 0) {
+            // Send fees to protocol
+            IERC20(_config.underlyingAsset).safeTransfer(
+                Manager(_config.manager).getTreasury(),
+                protocolFee
+            );
+        }
         // Send fragments
         FragmentToken(_config.token).mint(msg.sender, amount);
         // RebalancePosition
@@ -225,11 +235,20 @@ contract FragmentPool is Initializable {
         );
     }
 
+    function getSellPrice(uint256 amount) external view returns (uint256) {
+        (uint256 totalPrice, , ) = Pricing(_config.pricing).priceSell(
+            FragmentToken(_config.token).totalSupply(),
+            amount,
+            _getFullBalance()
+        );
+        return totalPrice;
+    }
+
     function sellFragment(uint256 amount) public {
         (uint256 totalPrice, uint256 userPrice, uint256 creatorFee) = Pricing(
             _config.pricing
         ).priceSell(
-                FragmentToken(_config.token).balanceOf(address(this)),
+                FragmentToken(_config.token).totalSupply(),
                 amount,
                 _getFullBalance()
             );

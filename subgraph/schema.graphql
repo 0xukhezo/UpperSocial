@@ -4,6 +4,7 @@ type FragmentPool @entity(immutable: true) {
   instance: Bytes! # address
   userId: BigInt! # uint256
   underlyingAsset: Bytes! # address
+  fragmentToken: Bytes! # address
   market: BigInt!
   supply: BigInt
   blockNumber: BigInt!

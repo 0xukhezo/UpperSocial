@@ -106,6 +106,19 @@ export class FragmentPool extends Entity {
     this.set("underlyingAsset", Value.fromBytes(value));
   }
 
+  get fragmentToken(): Bytes {
+    let value = this.get("fragmentToken");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set fragmentToken(value: Bytes) {
+    this.set("fragmentToken", Value.fromBytes(value));
+  }
+
   get market(): BigInt {
     let value = this.get("market");
     if (!value || value.kind == ValueKind.NULL) {
