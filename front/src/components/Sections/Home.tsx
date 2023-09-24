@@ -20,7 +20,7 @@ import PolygonIDVerifier from "../PolygonID/PolygonIDVerifier";
 export default function Home() {
   const { data: wallet } = useActiveWallet();
   const [connected, setConnected] = useState<boolean>(true);
-  const [provedAccess, setProvedAccess] = useState(false);
+
   const [open, setOpenModal] = useState(false);
 
   const setChangeWidth = () => {
@@ -34,10 +34,6 @@ export default function Home() {
     setTimeout(() => {
       setConnected(true);
     }, 2500);
-  };
-
-  const getProvedAccess = (access: boolean) => {
-    setProvedAccess(access);
   };
 
   const getOpenModal = (modal: boolean) => {
@@ -105,34 +101,24 @@ export default function Home() {
                   <div className="mb-[44px] mt-[22px] max-w-[297px] text-center mx-auto">
                     Find premium content, support creators and share the gains.
                   </div>
-                  {provedAccess ? (
-                    <div
-                      onClick={() => setConnected(false)}
-                      className="flex mx-auto"
-                    >
-                      <LoginButton />
-                    </div>
-                  ) : (
-                    <div
-                      onClick={() => setOpenModal(true)}
-                      className="flex mx-auto"
-                    >
-                      <button className="bg-indigo-700 px-[41px] py-[18px] rounded-lg font-medium text-white tracking-wide text-base flex">
-                        Polygon ID Verifier
-                      </button>
-                    </div>
-                  )}
+
+                  <div
+                    onClick={() => setConnected(false)}
+                    className="flex mx-auto"
+                  >
+                    <LoginButton />
+                  </div>
                 </>
               )}
             </div>
-            {open && (
+            {/* {open && (
               <PolygonIDVerifier
                 getProvedAccess={getProvedAccess}
                 getOpenModal={getOpenModal}
                 publicServerURL={publicServerURL}
                 localServerURL={localServerURL}
               />
-            )}
+            )} */}
           </div>
         </div>
       )}
