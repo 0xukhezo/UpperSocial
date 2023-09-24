@@ -8,7 +8,7 @@ export default function LogoutButton() {
     <button
       disabled={isPending}
       onClick={logout}
-      className="bg-indigo-700 rounded-lg font-medium text-white tracking-wide text-sm py-[9px] mt-[20px] w-1/3 ml-8 mb-[15px]"
+      className=" font-medium text-gray-500 tracking-wide text-sm py-[9px] mt-[20px] w-1/3 ml-8 mb-[15px]"
     >
       Log out
     </button>

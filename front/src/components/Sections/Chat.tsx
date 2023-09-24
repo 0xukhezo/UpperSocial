@@ -92,7 +92,7 @@ export default function Chat() {
   }, [messages, isOnNetwork]);
 
   useEffect(() => {
-    signer && initXmtp(chatSelected.address);
+    signer && chatSelected && initXmtp(chatSelected.address);
   }, [chatSelected]);
 
   const displayHeight = () => {
