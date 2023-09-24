@@ -50,11 +50,11 @@ contract FragmentPool is Initializable {
     // EVENTS
     /////////////////////////////////
     event Trade(
-        address user,
-        address creator,
+        address indexed user,
+        address indexed creator,
         bool isBuy,
-        uint256 fragmentAmount,
-        uint256 totalpPrice,
+        uint256 indexed fragmentAmount,
+        uint256 totalPrice,
         uint256 protocolPrice,
         uint256 creatorPrice,
         uint256 supply

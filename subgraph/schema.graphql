@@ -1,0 +1,28 @@
+type FragmentPool @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+  instance: Bytes! # address
+  userId: BigInt! # uint256
+  underlyingAsset: Bytes! # address
+  market: BigInt!
+  supply: BigInt
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Trade @entity(immutable: true) {
+  id: Bytes!
+  pool: Bytes! # address
+  creator: Bytes! # address
+  buyer: Bytes! # address
+  isBuy: Boolean!
+  amountTokens: BigInt! # Fragment amountTokens
+  totalPrice: BigInt! # total amount in underlying
+  protocolPrice: BigInt! # protocol price
+  creatorPrice: BigInt! # creator price
+  supply: BigInt! # Total suppy
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

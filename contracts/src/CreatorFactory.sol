@@ -37,7 +37,10 @@ contract CreatorFactory {
     event NewFragmentPool(
         address indexed owner,
         address indexed instance,
-        uint256 indexed userId
+        uint256 indexed userId,
+        address underlyingAsset,
+        uint256 market,
+        address fragmentToken
     );
 
     constructor(address manager) {
@@ -105,6 +108,13 @@ contract CreatorFactory {
         }
 
         // emit event
-        emit NewFragmentPool(msg.sender, address(proxy), userId);
+        emit NewFragmentPool(
+            msg.sender,
+            address(proxy),
+            userId,
+            underlyingAsset,
+            uint(market),
+            token
+        );
     }
 }

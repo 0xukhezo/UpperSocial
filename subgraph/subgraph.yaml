@@ -1,0 +1,45 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: CreatorFactory
+    network: mumbai
+    source:
+      address: "0xa25d143173dCee9649E6D51eF4FCDd2e758E5221"
+      abi: CreatorFactory
+      startBlock: 40439525
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - FragmentPool
+        - Trade
+      abis:
+        - name: CreatorFactory
+          file: ./abis/CreatorFactory.json
+      eventHandlers:
+        - event: NewFragmentPool(indexed address,indexed address,indexed uint256,address,uint256,address)
+          handler: handleFragmentPool
+      file: ./src/events.ts
+templates:
+  - kind: ethereum
+    name: FragmentPool
+    network: mumbai
+    source:
+      abi: FragmentPool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - FragmentPool
+        - Trade
+      abis:
+        - name: FragmentPool
+          file: ./abis/FragmentPool.json
+      eventHandlers:
+        - event: Trade(indexed address,indexed address,bool,indexed uint256,uint256,uint256,uint256,uint256)
+          handler: handleTrade
+      file: ./src/events.ts
