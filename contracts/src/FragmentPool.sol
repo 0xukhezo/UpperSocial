@@ -93,13 +93,14 @@ contract FragmentPool is Initializable {
     }
 
     function initialize(DataTypes.ConfigPool memory config) public initializer {
-        // _debToken = new DebToken(_underlyingAsset);
-        _govManager = Manager(_config.manager).getGovernance();
         // set up the configuration
         _config = config;
     }
 
     /////////////////////////////////////////////////////
+    function enableGov() external {
+        _govManager = Manager(_config.manager).getGovernance();
+    }
 
     function getConfig() external view returns (DataTypes.ConfigPool memory) {
         return _config;

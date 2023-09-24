@@ -131,7 +131,7 @@ contract Manager {
         _governance = gov;
     }
 
-    function getGovernance() external returns (address) {
+    function getGovernance() external view returns (address) {
         return _governance;
     }
 
