@@ -11,6 +11,20 @@ import "../src/FragmentPool.sol";
 import "./mock/ApeCoin.sol";
 
 contract FragmentPoolTest is Test {
+    address immutable test_user = 0xF70c1cEa8909563619547128A92dd7CC965F9657;
+    address immutable TREASURY = 0x2adB75AB75957Cb1A13c23191E153aF167fe7f73;
+    // AAVE
+    address immutable AAVE = 0xcC6114B983E4Ed2737E9BD3961c9924e6216c704;
+    address immutable WETH = 0xc199807AF4fEDB02EE567Ed0FeB814A077de4802;
+    address immutable AWETH = 0xAba444af64ad33A6d8575b8A353226997d6A126a;
+
+    // COMPOUND
+    address immutable USDC = 0xDB3cB4f2688daAB3BFf59C24cC42D4B6285828e9;
+    address immutable CUSDC = 0xF09F0369aB0a875254fB565E52226c88f10Bc839;
+
+    // LENS
+    address immutable LENS = 0x60Ae865ee4C725cd04353b5AAb364553f56ceF82;
+
     // Admin
     uint256 public _adminPK = 0xC0C00DEAD;
     address internal _admin = vm.addr(_adminPK);
@@ -30,6 +44,8 @@ contract FragmentPoolTest is Test {
     Manager internal _manager;
 
     function setUp() public virtual {
+        uint256 mumbaiFork = vm.createFork("mumbai", 40439525);
+        vm.selectFork(mumbaiFork);
         _token = new ApeCoin("APECOIN", "ACO");
         _token.mintToAddress(
             1000000000000000000000000000000000000000000000000000000,
@@ -39,11 +55,32 @@ contract FragmentPoolTest is Test {
             1000000000000000000000000000000000000000000000000000000,
             _userTwo
         );
-        _manager = new Manager(_admin, _treasury, _executor);
+        vm.startPrank(_admin);
+        console.log("admin", _admin);
+        _manager = new Manager(_admin, _admin, _executor);
+
+        Pricing pricing = new Pricing();
+        _manager.setLens(LENS);
+
+        _manager.setAave(AAVE);
+        _manager.setAAsset(WETH, AWETH);
+
+        _manager.setCAsset(USDC, CUSDC);
+        _manager.setPricing(address(pricing));
+        // SETTING MARKET
+
+        _manager.setMarket(WETH, DataTypes.Markets.AAVE);
+        _manager.setMarket(USDC, DataTypes.Markets.COMP);
+        _manager.setMarket(address(_token), DataTypes.Markets.NONE);
+
         _factory = new CreatorFactory(address(_manager));
+
+        vm.stopPrank();
     }
 
     function test_create_pool() public {
-        assertEq(true, true);
+        vm.startPrank(test_user);
+        _factory.createPool(address(_token), 0x91f3);
+        vm.stopPrank();
     }
 }

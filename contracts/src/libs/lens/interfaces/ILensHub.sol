@@ -37,4 +37,6 @@ interface ILensHub {
     function getProfileIdByHandle(
         string calldata handle
     ) external view returns (uint256);
+
+    function ownerOf(uint256 tokenId) external view returns (address);
 }

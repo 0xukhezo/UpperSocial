@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
+import {console} from "forge-std/console.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "../lens/interfaces/ILensHub.sol";
 
@@ -11,10 +12,11 @@ library LensLogic {
 
     // LOGICS
     function verifyOwnership(address lens, uint256 lensId) internal view {
-        if (IERC721(lens).ownerOf(lensId) == msg.sender) revert NoLensProfile();
+        if (ILensHub(lens).ownerOf(lensId) != msg.sender)
+            revert NoLensProfile();
     }
 
-    // NOT FOR NOW
+    // NOT
     // function getProfile(
     //     address lens
     // ) internal view returns (LensDataTypes.ProfileStruct memory) {

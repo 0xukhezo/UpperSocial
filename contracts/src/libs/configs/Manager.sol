@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: agpl-3.0
 pragma solidity 0.8.19;
 
+import {console} from "forge-std/console.sol";
 import "../utils/DataTypes.sol";
 import "../utils/Errors.sol";
 
@@ -40,6 +41,8 @@ contract Manager {
     //////////////////////////////////
 
     modifier onlyAdmin() {
+        console.log("sender", msg.sender);
+        console.log("admin", _admin);
         if (msg.sender != _admin) revert Errors.NotAdmin();
         _;
     }
