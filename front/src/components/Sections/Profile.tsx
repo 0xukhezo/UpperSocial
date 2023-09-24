@@ -285,28 +285,27 @@ export default function Profile({
             </div>
           </section>
           <section className="overflow-auto h-full">
-            {pool && <CreatorStats fragmentPoolAddress={pool.id} />}
-            {profile?.name
-              ? pool && (
-                  <FragmentSeller
-                    name={profile?.name}
-                    poolAddress={pool.id}
-                    tokenAddress={pool.underlyingAsset}
-                    fragmentTokenAddress={pool.fragmentToken}
-                  />
-                )
-              : profile &&
-                pool && (
-                  <FragmentSeller
-                    name={
-                      profile.handle.charAt(0).toUpperCase() +
-                      profile.handle.slice(1, profile.handle.indexOf("."))
-                    }
-                    poolAddress={pool.id}
-                    tokenAddress={pool.underlyingAsset}
-                    fragmentTokenAddress={pool.fragmentToken}
-                  />
-                )}
+            <CreatorStats fragmentPoolAddress={pool ? pool.id : "0x"} />
+            {profile?.name ? (
+              <FragmentSeller
+                name={profile?.name}
+                poolAddress={pool ? pool.id : "0x"}
+                tokenAddress={pool ? pool.underlyingAsset : "0x"}
+                fragmentTokenAddress={pool ? pool.fragmentToken : "0x"}
+              />
+            ) : (
+              profile && (
+                <FragmentSeller
+                  name={
+                    profile.handle.charAt(0).toUpperCase() +
+                    profile.handle.slice(1, profile.handle.indexOf("."))
+                  }
+                  poolAddress={pool ? pool.id : "0x"}
+                  tokenAddress={pool ? pool.underlyingAsset : "0x"}
+                  fragmentTokenAddress={pool ? pool.fragmentToken : "0x"}
+                />
+              )
+            )}
             {isMyProfile && (
               <CreatorCard
                 profileAddress={profile.ownedBy}

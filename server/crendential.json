@@ -5,18 +5,35 @@
       "@version": 1.1,
       "id": "@id",
       "type": "@type",
-      "Whitelist": {
+      "UpperWhitelist": {
         "@context": {
           "@propagate": true,
           "@protected": true,
-          "polygon-vocab": "urn:uuid:a4fde071-0a47-4557-b1bc-db6b5e2c0ae5#",
+          "polygon-vocab": "urn:uuid:cad0bc37-e175-4395-bc8c-ae6d486c7378#",
           "xsd": "http://www.w3.org/2001/XMLSchema#",
+          "wasInNewYork": {
+            "@id": "polygon-vocab:wasInNewYork",
+            "@type": "xsd:boolean"
+          },
           "whitelisted": {
             "@id": "polygon-vocab:whitelisted",
             "@type": "xsd:boolean"
+          },
+          "lensStats": {
+            "@context": {
+              "MinFollowing": {
+                "@id": "polygon-vocab:MinFollowing",
+                "@type": "xsd:double"
+              },
+              "MinFollowers": {
+                "@id": "polygon-vocab:MinFollowers",
+                "@type": "xsd:double"
+              }
+            },
+            "@id": "polygon-vocab:lensStats"
           }
         },
-        "@id": "urn:uuid:b75a6714-916c-4f46-afa2-df1e7899c4bf"
+        "@id": "urn:uuid:1f1adb71-835f-412b-8e13-d1b2d33c2f95"
       }
     }
   ]
