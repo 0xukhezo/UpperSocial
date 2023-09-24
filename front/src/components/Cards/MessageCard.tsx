@@ -84,7 +84,8 @@ export default function MessageCard({
             height={40}
             alt="Profile Image"
             src={`data:image/png;base64,${new Identicon(
-              data[0].ownedBy,
+              // data[0].ownedBy,
+              "0xF70c1cEa8909563619547128A92dd7CC965F9657",
               64
             ).toString()}`}
             className="rounded-full min-h-[40px] mx-4"
