@@ -190,13 +190,6 @@ contract FragmentPool is Initializable {
     }
 
     function buyFragment(uint256 amount) public isDisabled {
-        // if (
-        //     0 == FragmentToken(_config.token).totalSupply() &&
-        //     msg.sender != _config.creator
-        // ) {
-        //     revert CreatorNeedToBuyFirst();
-        // }
-
         (uint256 totalPrice, uint256 protocolFee, ) = Pricing(_config.pricing)
             .priceBuy(
                 FragmentToken(_config.token).totalSupply(),

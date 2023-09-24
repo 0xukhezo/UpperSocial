@@ -95,37 +95,52 @@ contract FragmentPoolTest is Test {
         );
 
         DataTypes.ConfigPool memory config = FragmentPool(instance).getConfig();
-
+        console.log(
+            "BUY : ---------------------------------------------------------"
+        );
         vm.startPrank(test_user);
         uint256 buyPrice = FragmentPool(instance).getBuyPrice(1);
 
-        console.log("1 ----------------------- INIT Buy Price", buyPrice);
         _token.approve(instance, buyPrice);
         FragmentPool(instance).buyFragment(1); // First fragment creator
-        console.log("FRAGMENT", config.token);
+
         assertEq(IERC20(config.token).balanceOf(test_user), 1);
 
         vm.stopPrank();
-
+        console.log(
+            "BUY : ---------------------------------------------------------"
+        );
         vm.startPrank(_user);
         uint256 buyPrice2 = FragmentPool(instance).getBuyPrice(2);
 
-        console.log("2 ----------------------- INIT Buy Price", buyPrice2);
         _token.approve(instance, buyPrice2);
         FragmentPool(instance).buyFragment(2); // First fragment creator
-        console.log("FRAGMENT", config.token);
+
         assertEq(IERC20(config.token).balanceOf(_user), 2);
 
         vm.stopPrank();
-
+        console.log(
+            "BUY : ---------------------------------------------------------"
+        );
         vm.startPrank(_user);
-        uint256 buyPrice3 = FragmentPool(instance).getBuyPrice(2);
 
-        console.log("3 ----------------------- INIT Buy Price", buyPrice3);
+        uint256 buyPrice3 = FragmentPool(instance).getBuyPrice(2);
         _token.approve(instance, buyPrice3);
         FragmentPool(instance).buyFragment(2); // First fragment creator
-        console.log("FRAGMENT", config.token);
+
         assertEq(IERC20(config.token).balanceOf(_user), 4);
+        console.log("BALANCE: ", IERC20(config.token).totalSupply());
+        vm.stopPrank();
+        console.log(
+            "SELL : ---------------------------------------------------------"
+        );
+        vm.startPrank(_user);
+        uint256 sellPrice = FragmentPool(instance).getSellPrice(3);
+
+        IERC20(config.token).approve(instance, 3);
+        FragmentPool(instance).sellFragment(3); // First fragment creator
+
+        assertEq(IERC20(config.token).balanceOf(_user), 1);
 
         vm.stopPrank();
 
