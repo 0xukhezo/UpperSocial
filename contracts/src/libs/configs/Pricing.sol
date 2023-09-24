@@ -3,6 +3,7 @@ pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+import {console} from "forge-std/console.sol";
 import "../configs/Manager.sol";
 import {AaveLogic} from "../logic/AaveLogic.sol";
 import {CompoundLogic} from "../logic/CompoundLogic.sol";
@@ -11,27 +12,35 @@ import {TimeLock} from "../gov/TimeLock.sol";
 import {FragmentToken} from "../tokens/FragmentToken.sol";
 
 contract Pricing {
-    uint256 constant K = 160;
+    uint256 constant K = 1800;
     uint256 constant FEE = 5000;
     uint256 constant INIT_PRICE = 0.001 ether;
+    uint256 constant MAX_SUPPY = 888;
 
     function priceBuy(
         uint256 currentFragment,
         uint256 amount,
         uint256 currentSupply
-    ) external pure returns (uint256, uint256, uint256) {
+    ) external view returns (uint256, uint256, uint256) {
         uint256 price = 0;
         if (currentFragment == 0) return (INIT_PRICE, 0, 0);
+        console.log("################################################");
+
+        console.log("> currentFragment   ;", currentFragment);
+
         for (uint256 i = 0; i < amount; ) {
             uint256 newBalance = currentFragment + i;
-            uint priceFragment = currentSupply + price / currentFragment + i;
-            price += _calculatePriceFragment(priceFragment, newBalance);
+            uint256 priceFragment = (currentSupply + price) / MAX_SUPPY;
+            console.log("> newBalance    :", newBalance);
+            console.log("> priceFragment :", priceFragment);
 
+            price += _calculatePriceFragment(priceFragment, newBalance);
+            console.log("BUY PRICE       :", price);
             unchecked {
                 i++;
             }
         }
-
+        console.log("################################################");
         uint256 protocolFee = (price * FEE) / 1 ether;
         uint256 totalPrice = price + protocolFee;
 
@@ -42,17 +51,26 @@ contract Pricing {
         uint256 currentFragment,
         uint256 amount,
         uint256 currentSupply
-    ) external pure returns (uint256, uint256, uint256) {
+    ) external view returns (uint256, uint256, uint256) {
         uint256 price = 0;
-        for (uint256 i = 0; i < amount; ) {
-            uint256 newBalance = currentFragment + i;
-            uint priceFragment = currentSupply - price / currentFragment - i;
-            price += _calculatePriceFragment(priceFragment, newBalance);
+        console.log("################################################");
 
+        console.log("> currentFragment :", currentFragment);
+        console.log("> currentSupply   :", currentSupply);
+        console.log("> priceFragment   :", (currentSupply - price) / MAX_SUPPY);
+        for (uint256 i = 0; i < amount; ) {
+            uint256 newBalance = currentFragment - i;
+            uint256 priceFragment = (currentSupply - price) / MAX_SUPPY;
+            console.log("> newBalance      :", newBalance);
+            console.log("> priceFragment   :", priceFragment);
+
+            price += _calculatePriceFragment(priceFragment, newBalance);
+            console.log("> SELL PRICE      :", price);
             unchecked {
                 i++;
             }
         }
+        console.log("################################################");
 
         uint256 creatorFee = (price * FEE) / 1 ether;
         uint256 userPrice = price - creatorFee;
@@ -83,7 +101,7 @@ contract Pricing {
     function _calculatePriceFragment(
         uint256 priceFragment,
         uint256 currentSupply
-    ) internal pure returns (uint256) {
+    ) internal view returns (uint256) {
         uint256 amountToMint = 1;
         uint256 sum1 = currentSupply == 0
             ? 0

@@ -4,6 +4,8 @@ out = 'out'
 libs = ['lib'] 
 fs_permissions = [{ access = "read-write", path = "./"}]
 
+optimizer = true
+optimizer_runs = 10_000_000
 
 
 [rpc_endpoints]

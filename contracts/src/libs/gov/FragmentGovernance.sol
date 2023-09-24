@@ -18,7 +18,6 @@ contract FragmentGovernance is
 {
     /**
         QUORUM 20%
-    
      */
     constructor(
         uint256 userId,
