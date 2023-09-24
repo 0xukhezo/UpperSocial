@@ -5,6 +5,7 @@ import { formatNumber } from "@/utils/formatNumber";
 // Components
 import VoteCard from "../ShowCards/VoteCard";
 import PieChart from "../Chart/PieChart";
+import { ArrowSmallUpIcon } from "@heroicons/react/24/outline";
 
 interface GovernanceFeedProps {
   proposalSelected: any;
@@ -38,7 +39,7 @@ export default function GovernanceFeed({
       </section>
       <section className="min-w-[350px]">
         <h2 className="text-center">Voting Results</h2>
-        <div className="max-w-[124px] mx-auto">
+        <div className="max-w-[124px] mx-auto mb-[32px]">
           <PieChart
             noVotes={proposalSelected.no}
             yesVotes={proposalSelected.yes}
@@ -46,15 +47,38 @@ export default function GovernanceFeed({
         </div>
         <div className="grid grid-cols-2 text-center">
           <div className="max-w-[175px]">
-            <h2>Yes</h2>
+            <h2 className="mb-[8px] text-sm text-gray-500">Yes</h2>
             <div className="grid grid-cols-2">
-              <span>{proposalSelected.yes}</span> <span>122</span>
+              <span className="font-semibold text-lg text-gray-900">
+                {proposalSelected.yes}
+              </span>
+              <span className="font-semibold text-green-500 flex">
+                <ArrowSmallUpIcon
+                  width={20}
+                  height={20}
+                  aria-hidden="true"
+                  className="text-green-600 "
+                />
+                98
+              </span>
             </div>
           </div>
           <div className="max-w-[175px]">
-            <h2>No</h2>
+            <h2 className="mb-[8px] text-sm text-gray-500">No</h2>
             <div className="grid grid-cols-2">
-              <span>{proposalSelected.no}</span> <span>122</span>
+              <span className="font-semibold text-lg text-gray-900">
+                {proposalSelected.no}
+              </span>{" "}
+              <span className="font-semibold text-green-500 flex">
+                {" "}
+                <ArrowSmallUpIcon
+                  width={20}
+                  height={20}
+                  aria-hidden="true"
+                  className="text-green-600 "
+                />
+                34
+              </span>
             </div>
           </div>
         </div>

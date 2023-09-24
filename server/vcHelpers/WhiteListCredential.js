@@ -1,7 +1,7 @@
 module.exports = {
   WhiteListCredential: () => ({
-    circuitId: "credentialAtomicQueryMTPV2",
-    id: 1695519198,
+    circuitId: "credentialAtomicQuerySigV2",
+    id: 1695519930,
     query: {
       allowedIssuers: ["*"],
       context:

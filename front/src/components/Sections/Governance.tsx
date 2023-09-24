@@ -57,7 +57,7 @@ export default function Governance() {
     <div className="flex flex-row feed">
       <section className="min-w-[400px] border-r-1 ">
         <div className="flex justify-between py-[12px] px-[24px] items-center">
-          <h1>Proposals</h1>
+          <h1 className="font-semibold text-2xl">Proposals</h1>
           <button
             className="px-[17px] py-[9px] bg-indigo-400 border-1 border-indigo-600 text-white rounded-lg"
             onClick={() => setModeCreate(true)}

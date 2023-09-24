@@ -63,7 +63,7 @@ export default function MessageCard({
       >
         {message.content}
       </span>
-      {data &&
+      {/* {data &&
       data[0].picture &&
       "original" in data[0].picture &&
       address === message.senderAddress ? (
@@ -91,6 +91,19 @@ export default function MessageCard({
             className="rounded-full min-h-[40px] mx-4"
           />
         )
+      )} */}
+      {address === message.senderAddress && (
+        <Image
+          width={40}
+          height={40}
+          alt="Profile Image"
+          src={`data:image/png;base64,${new Identicon(
+            // data[0].ownedBy,
+            "0xF70c1cEa8909563619547128A92dd7CC965F9657",
+            64
+          ).toString()}`}
+          className="rounded-full min-h-[40px] mx-4"
+        />
       )}
     </li>
   );

@@ -40,6 +40,7 @@ export default function Profile({
   myProfile,
 }: ProfileProps) {
   const [feed, setFeed] = useState<AnyPublication[] | undefined>([]);
+  const [pool, setPool] = useState<any>();
   const {
     data: profile,
     loading,
@@ -57,13 +58,14 @@ export default function Profile({
     setFeed(publicationsPost);
   }, [publications]);
 
-  async function fetchPool(daoName: string) {
+  async function fetchPool() {
     // fragmentPools(where: {owner: profile?.ownedBy}) {
     const queryBody = `query {
         fragmentPools(where: {owner: "0xF70c1cEa8909563619547128A92dd7CC965F9657"}) {
           id
           userId
           underlyingAsset
+          fragmentToken
           transactionHash
           supply
           market
@@ -73,17 +75,13 @@ export default function Profile({
 
     try {
       let response = await client.query({ query: Pools(queryBody) });
-      console.log(response);
-      // setTimelockAddress(response.data.daos[0].timelock.id);
-      // setGovernorAddress(response.data.daos[0].gov.id);
-      // setTokenAddress(response.data.daos[0].token.id);
-      // setDao(response.data.daos[0]);
+
+      setPool(response.data.fragmentPools[0]);
     } catch (err) {
       console.log({ err });
     }
   }
 
-  const poolAddress = "0x00";
   const mockFeed = [
     {
       image: Mock1.src,
@@ -126,6 +124,10 @@ export default function Profile({
       likes: 19023,
     },
   ];
+
+  useEffect(() => {
+    fetchPool();
+  }, []);
 
   return (
     <>
@@ -283,20 +285,28 @@ export default function Profile({
             </div>
           </section>
           <section className="overflow-auto h-full">
-            <CreatorStats fragmentPoolAddress={poolAddress} />
-            {profile?.name ? (
-              <FragmentSeller name={profile?.name} poolAddress={poolAddress} />
-            ) : (
-              profile && (
-                <FragmentSeller
-                  name={
-                    profile.handle.charAt(0).toUpperCase() +
-                    profile.handle.slice(1, profile.handle.indexOf("."))
-                  }
-                  poolAddress={poolAddress}
-                />
-              )
-            )}
+            {pool && <CreatorStats fragmentPoolAddress={pool.id} />}
+            {profile?.name
+              ? pool && (
+                  <FragmentSeller
+                    name={profile?.name}
+                    poolAddress={pool.id}
+                    tokenAddress={pool.underlyingAsset}
+                    fragmentTokenAddress={pool.fragmentToken}
+                  />
+                )
+              : profile &&
+                pool && (
+                  <FragmentSeller
+                    name={
+                      profile.handle.charAt(0).toUpperCase() +
+                      profile.handle.slice(1, profile.handle.indexOf("."))
+                    }
+                    poolAddress={pool.id}
+                    tokenAddress={pool.underlyingAsset}
+                    fragmentTokenAddress={pool.fragmentToken}
+                  />
+                )}
             {isMyProfile && (
               <CreatorCard
                 profileAddress={profile.ownedBy}
@@ -420,9 +430,16 @@ export default function Profile({
             </div>
           </section>
           <section className="overflow-auto h-full">
-            <CreatorStats fragmentPoolAddress={poolAddress} />
-            <FragmentSeller name={"Creator"} poolAddress={poolAddress} />
-            {isMyProfile && (
+            {pool && <CreatorStats fragmentPoolAddress={pool.id} />}
+            {pool && (
+              <FragmentSeller
+                name={"Creator"}
+                poolAddress={pool.id}
+                tokenAddress={pool.underlyingAsset}
+                fragmentTokenAddress={pool.fragmentToken}
+              />
+            )}
+            {isMyProfile && !pool && (
               <CreatorCard
                 profileAddress={"0xF70c1cEa8909563619547128A92dd7CC965F9657"}
                 profileId={"0x91f3"}

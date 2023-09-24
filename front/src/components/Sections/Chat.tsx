@@ -111,7 +111,7 @@ export default function Chat() {
   return (
     <div className="flex flex-row feed">
       <section className="min-w-[400px] border-r-1 ">
-        <h1 className="py-[12px] px-[24px]">Messages</h1>
+        <h1 className="py-[12px] px-[24px] font-semibold text-2xl">Messages</h1>
         <div className="flex flex-col">
           {userWithChat.map((user: any) => {
             return (

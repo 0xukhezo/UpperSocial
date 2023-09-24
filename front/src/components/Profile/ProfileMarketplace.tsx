@@ -4,6 +4,8 @@ import React from "react";
 import Image from "next/image";
 // Images
 import Rectangle from "../../../public/Rectangle.png";
+import Mock1 from "../../../public/FeedMock1.png";
+import Mock2 from "../../../public/FeedMock2.png";
 
 export default function Marketplace() {
   return (
@@ -25,14 +27,14 @@ export default function Marketplace() {
             width={177}
             height={119}
             alt="Coin Image"
-            src={Rectangle.src}
+            src={Mock1.src}
             className="mr-[6px] min-w-[177px]"
           />{" "}
           <Image
             width={177}
             height={119}
             alt="Coin Image"
-            src={Rectangle.src}
+            src={Mock2.src}
             className="mr-[6px] min-w-[177px]"
           />
           <Image

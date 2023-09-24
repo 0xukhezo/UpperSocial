@@ -41,7 +41,7 @@ export default function TokensModal({
   });
 
   const creatorFactoryAddress = process.env.NEXT_PUBLIC_CREATOR_FACTORY_ADDRESS;
-  console.log(tokenSelected.address, profileId);
+
   const { config: creatorFactoryContractConfig } = usePrepareContractWrite({
     address: creatorFactoryAddress as `0x${string}`,
     abi: abi.abiCreatorFactory,
@@ -74,13 +74,13 @@ export default function TokensModal({
 
   const tokens = [
     {
-      address: "0xaBf610082032C7Dc784ed9534CC3b474BefDfd60",
+      address: "0x413E5cb716aD3994e5294FA6B74DD3B8A4083497",
       imagen: ApeCoin.src,
       symbol: "APE Coin",
       community: "162",
     },
     {
-      address: "0xc199807AF4fEDB02EE567Ed0FeB814A077de4802",
+      address: "0xaD3C5a67275dE4b5554CdD1d961e957f408eF75a",
       imagen: MaticCoin.src,
       symbol: "wMatic",
       community: "562",
