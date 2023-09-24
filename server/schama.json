@@ -2,7 +2,7 @@
   "$metadata": {
     "type": "Whitelist",
     "uris": {
-      "jsonLdContext": "ipfs://QmfU1HWWcj9XfM6akUsMy596wjWPeBSLCyLPDNiz2c9qQR"
+      "jsonLdContext": "https://raw.githubusercontent.com/0xukhezo/UpperSocial/main/server/crendential.json"
     },
     "version": "1.0.4"
   },
