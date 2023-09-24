@@ -187,7 +187,7 @@ export default function FragmentSeller({
             <span>Fragments</span>
           </div>
 
-          {buyPrice && (
+          {buyPrice ? (
             <div className="flex flex-col gap-y-[12px]">
               <div className="grid grid-cols-2">
                 <div className="flex items-center">
@@ -273,6 +273,8 @@ export default function FragmentSeller({
                 </div>
               </div>
             </div>
+          ) : (
+            <div> </div>
           )}
           <button
             className="bg-indigo-700 rounded-lg font-medium text-white tracking-wide text-sm w-full py-[9px] mt-[20px] flex items-center justify-center"
