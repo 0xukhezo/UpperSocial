@@ -105,7 +105,7 @@ export default function Home() {
                   <div className="mb-[44px] mt-[22px] max-w-[297px] text-center mx-auto">
                     Find premium content, support creators and share the gains.
                   </div>
-                  {!provedAccess ? (
+                  {provedAccess ? (
                     <div
                       onClick={() => setConnected(false)}
                       className="flex mx-auto"
