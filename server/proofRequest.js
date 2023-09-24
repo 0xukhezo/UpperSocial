@@ -1,6 +1,6 @@
 const { WhiteListCredential } = require("./vcHelpers/WhiteListCredential");
 
-const humanReadableAuthReason = "Must be born before this year";
+const humanReadableAuthReason = "Must be in the Upper Social Whitelist";
 
 const proofRequest = WhiteListCredential();
 

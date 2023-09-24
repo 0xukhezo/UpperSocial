@@ -122,10 +122,8 @@ export default function FragmentSeller({
 
   useEffect(() => {
     if (isSelling) {
-      console.log(Number(fragmentsAmount));
       setAmountToApprove(Number(fragmentsAmount));
     } else {
-      console.log(Number(buyPrice));
       setAmountToApprove(Number(buyPrice));
     }
   }, [amountToApprove]);

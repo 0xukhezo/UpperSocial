@@ -132,11 +132,11 @@ async function handleVerification(req, res) {
     const opts = {
       AcceptedStateTransitionDelay: 60 * 1000 * 5, // up to a 5 minute delay accepted by the Verifier
     };
-    console.log(tokenStr, authRequest, opts);
+
     authResponse = await verifier.fullVerify(tokenStr, authRequest, opts);
 
     const userId = authResponse.from;
-    console.log(userId, "userId");
+
     io.sockets.emit(
       sessionId,
       socketMessage("handleVerification", STATUS.DONE, authResponse)
