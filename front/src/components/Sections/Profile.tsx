@@ -438,12 +438,12 @@ export default function Profile({
                 fragmentTokenAddress={pool.fragmentToken}
               />
             )} */}
-            {isMyProfile && !pool && (
+            {/* {isMyProfile && !pool && (
               <CreatorCard
                 profileAddress={"0xF70c1cEa8909563619547128A92dd7CC965F9657"}
                 profileId={"0x91f3"}
               />
-            )}
+            )} */}
             <CreatorCard
               profileAddress={"0xF70c1cEa8909563619547128A92dd7CC965F9657"}
               profileId={"0x91f3"}

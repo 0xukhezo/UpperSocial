@@ -6,20 +6,13 @@ import React, { useState } from "react";
 import Image from "next/image";
 // Images
 import UpperCoin from "../../../public/UpperCoin.svg";
-// Components
-import WorldCoinButton from "../Buttons/WorldCoinButton";
 
 export default function VoteCard() {
   const [selection, setSelection] = useState(true);
   const [fragmentsAmount, setFragmentsAmount] = useState<number>(0);
-  const [worldcoin, setWorldcoin] = useState<boolean>(false);
 
   const handleFragmentsAmountChange = (val: string) => {
     setFragmentsAmount(Number(val));
-  };
-
-  const getWorldCoin = (success: boolean) => {
-    setWorldcoin(success);
   };
 
   return (
@@ -74,13 +67,9 @@ export default function VoteCard() {
             />
             <span>Fragments</span>
           </div>
-          {worldcoin ? (
-            <button className="bg-indigo-700 rounded-lg font-medium text-white tracking-wide text-sm w-full py-[9px] mt-[20px] flex items-center justify-center">
-              <span>Vote {selection}</span>
-            </button>
-          ) : (
-            <WorldCoinButton getWorldCoin={getWorldCoin} />
-          )}
+          <button className="bg-indigo-700 rounded-lg font-medium text-white tracking-wide text-sm w-full py-[9px] mt-[20px] flex items-center justify-center">
+            <span>Vote {selection}</span>
+          </button>
         </div>
       </div>
     </div>
