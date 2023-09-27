@@ -9,7 +9,7 @@ import {
 import Loader from "../Loader/Loader";
 import PostCard from "../Cards/PostCard";
 import CreatorStats from "../Profile/CreatorStats";
-import FragmentSeller from "../Profile/FragmentSeller";
+import FragmentSeller from "../Seller/FragmentSeller";
 import ProfileMarketplace from "../Profile/ProfileMarketplace";
 import CreatorCard from "../Cards//CreatorCard";
 import FollowButton from "../Buttons/FollowButton";
