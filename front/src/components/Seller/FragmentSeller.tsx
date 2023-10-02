@@ -56,8 +56,6 @@ export default function FragmentSeller({
     }
   }, [fragmentsAmount, isSelling]);
 
-  console.log("fragmentTokenAddress", fragmentTokenAddress);
-
   return (
     <div className="flex flex-col ml-[24px] mt-[16px]">
       <div className="shadow-xl max-w-[448px] px-[20px] py-[24px] rounded-lg">
@@ -127,18 +125,20 @@ export default function FragmentSeller({
                 abi={abi.abiFragmentPool}
                 functionName={"sellFragment"}
                 args={[fragmentsAmount]}
-                children={<div>Sell</div>}
                 getTxStatus={getTxStatus}
-              />
+              >
+                <div>Sell</div>
+              </WagmiButton>
             ) : (
               <WagmiButton
                 address={poolAddress as `0x${string}`}
                 abi={abi.abiFragmentPool}
                 functionName={"buyFragment"}
                 args={[fragmentsAmount]}
-                children={<div>Buy</div>}
                 getTxStatus={getTxStatus}
-              />
+              >
+                <div>Buy</div>
+              </WagmiButton>
             )
           ) : (
             <WagmiButton
@@ -150,9 +150,10 @@ export default function FragmentSeller({
               abi={abi.abiERC20}
               functionName={"approve"}
               args={[poolAddress, amountToApprove]}
-              children={<div>Approve</div>}
               getTxStatus={getTxStatus}
-            />
+            >
+              <div>Approve</div>
+            </WagmiButton>
           )}
         </div>
       </div>
