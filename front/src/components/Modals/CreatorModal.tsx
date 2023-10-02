@@ -13,7 +13,7 @@ import {
 import abi from "../../../abis/abi.json";
 // Images
 import UpperCoin from "../../../public/UpperCoin.svg";
-import ApeCoin from "../../../public/ApeCoin.svg";
+
 import UsdcCoin from "../../../public/UsdcCoin.svg";
 import MaticCoin from "../../../public/MaticCoin.svg";
 import GhoCoin from "../../../public/GhoCoin.svg";
@@ -73,12 +73,6 @@ export default function TokensModal({
   };
 
   const tokens = [
-    {
-      address: "0x413E5cb716aD3994e5294FA6B74DD3B8A4083497",
-      imagen: ApeCoin.src,
-      symbol: "APE Coin",
-      community: "162",
-    },
     {
       address: "0xaD3C5a67275dE4b5554CdD1d961e957f408eF75a",
       imagen: MaticCoin.src,
